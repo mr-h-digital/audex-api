@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/audex}
-    username: ${PGUSER:audex}
-    password: ${PGPASSWORD:audex}
+    url: ${DATABASE_URL:jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5432}/${PGDATABASE:${POSTGRES_DB:audex}}}
+    username: ${PGUSER:${POSTGRES_USER:audex}}
+    password: ${PGPASSWORD:${POSTGRES_PASSWORD:audex}}
   flyway:
     enabled: true
 server:
@@ -19,7 +19,7 @@ audex:
     from: ${AUDEX_MAIL_FROM:no-reply@audex.local}
   allowed-origins: ${AUDEX_ALLOWED_ORIGINS:http://localhost:5173}
   storage:
-    # Names match the variables a Railway storage bucket provides; leave BUCKET unset to run without photo storage.
+    # S3 credentials use Railway's BUCKET, ACCESS_KEY_ID, ENDPOINT, REGION and SECRET_ACCESS_KEY variables.
     bucket: ${BUCKET:}
     endpoint: ${ENDPOINT:}
     region: ${REGION:auto}

@@ -42,16 +42,19 @@ mvn test
 mvn spring-boot:run
 ```
 
-By default, the service connects to `jdbc:postgresql://localhost:5432/audex` with username and password `audex`, and listens on port `8080`. Override these values with environment variables:
+By default, the service connects to `jdbc:postgresql://localhost:5432/audex` with username and password `audex`, and listens on port `8080`. Railway's Postgres variables are used directly to construct the JDBC connection; `DATABASE_URL` can still override it when supplied:
 
-| Variable | Default | Purpose |
-| --- | --- | --- |
-| `DATABASE_URL` | `jdbc:postgresql://localhost:5432/audex` | JDBC URL for PostgreSQL |
-| `PGUSER` | `audex` | Database username |
-| `PGPASSWORD` | `audex` | Database password |
-| `PORT` | `8080` | HTTP port |
-| `AUDEX_APP_URL` | `http://localhost:5173` | Web app origin used in account emails |
-| `AUDEX_ALLOWED_ORIGINS` | `http://localhost:5173` | Browser origin allowed to call the API |
+| Variable | Purpose |
+| --- | --- |
+| `PGHOST`, `PGPORT` | PostgreSQL host and port |
+| `PGDATABASE` or `POSTGRES_DB` | Database name (`PGDATABASE` takes precedence) |
+| `PGUSER` or `POSTGRES_USER` | Database username (`PGUSER` takes precedence) |
+| `PGPASSWORD` or `POSTGRES_PASSWORD` | Database password (`PGPASSWORD` takes precedence) |
+| `PGDATA` | PostgreSQL server's data directory; not used by this API client |
+| `DATABASE_URL` | Optional full JDBC URL override |
+| `PORT` | HTTP port (default `8080`) |
+| `AUDEX_APP_URL` | Web app origin used in account emails |
+| `AUDEX_ALLOWED_ORIGINS` | Browser origin allowed to call the API |
 
 Flyway applies the SQL migrations at startup. Keep real credentials in environment configuration; never commit them or a `.env` file.
 
@@ -128,7 +131,9 @@ Create a Railway service from this repository; Railway detects the Maven project
 
 | Variable | Purpose |
 | --- | --- |
-| `DATABASE_URL`, `PGUSER`, `PGPASSWORD` | PostgreSQL connection; `DATABASE_URL` must use a `jdbc:postgresql://...` URL |
+| `PGHOST`, `PGPORT`, `PGDATABASE`, `PGUSER`, `PGPASSWORD` | Railway PostgreSQL connection values; the API builds its JDBC URL from these |
+| `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD` | Alternate database name, username and password variables used if the corresponding `PG*` variable is unset |
+| `DATABASE_URL` | Optional full JDBC URL override |
 | `AUDEX_SETUP_CODE` | One-time code for creating the first account; remove it after setup |
 | `AUDEX_APP_URL` | Public web app origin used in password-reset links, e.g. `https://audex.mrhdigital.co.za` |
 | `AUDEX_ALLOWED_ORIGINS` | Web app origin allowed to call the API |
@@ -136,7 +141,7 @@ Create a Railway service from this repository; Railway detects the Maven project
 | `AUDEX_MAIL_FROM` | Sender address for account emails |
 | `BUCKET`, `ENDPOINT`, `REGION`, `ACCESS_KEY_ID`, `SECRET_ACCESS_KEY` | S3-compatible object storage for audit photos |
 
-Without SMTP configuration, account recovery emails are only written to the application log. Leave `BUCKET` unset to run without photo storage. Do not commit server credentials or put them in the frontend repository.
+Railway's `RAILWAY_BUCKET_NAME` is a display name and `RAILWAY_BUCKET_ID` is an internal identifier; neither is the S3 bucket name. The API needs `BUCKET`, `ENDPOINT` and `ACCESS_KEY_ID` in addition to `REGION` and `SECRET_ACCESS_KEY` to enable photo storage. Leave `BUCKET` unset to run without photo storage. Without SMTP configuration, account recovery emails are only written to the application log. Do not commit server credentials or put them in the frontend repository.
 
 ## Current limitations
 
