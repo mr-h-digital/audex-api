@@ -1,0 +1,1772 @@
+{
+ "name": "WPC Health Care Housekeeping Audit",
+ "version": 1,
+ "sections": [
+  {
+   "code": "chemicals-chemical-storage",
+   "name": "CHEMICALS & CHEMICAL STORAGE",
+   "highRisk": true,
+   "items": [
+    {
+     "key": "chemicals-chemical-storage-01",
+     "text": "All chemical containers must be kept clean.",
+     "severity": "CRITICAL",
+     "weight": 3
+    },
+    {
+     "key": "chemicals-chemical-storage-02",
+     "text": "All chemicals correctly labeled.",
+     "severity": "CRITICAL",
+     "weight": 3
+    },
+    {
+     "key": "chemicals-chemical-storage-03",
+     "text": "Chemicals correctly diluted",
+     "severity": "CRITICAL",
+     "weight": 3
+    },
+    {
+     "key": "chemicals-chemical-storage-04",
+     "text": "Chlorine Sanitiser (Sintol/ Biocide/Dynacide) correctly diluted and replaced every 4 hours.",
+     "severity": "CRITICAL",
+     "weight": 3
+    },
+    {
+     "key": "chemicals-chemical-storage-05",
+     "text": "The mops should be correctly cleaned and stored",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "chemicals-chemical-storage-06",
+     "text": "The storage shelves must be kept clean.",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "code": "reception",
+   "name": "RECEPTION",
+   "highRisk": false,
+   "items": [
+    {
+     "key": "reception-01",
+     "text": "The floors and carpets must be kept clean, free from stains and litter.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "reception-02",
+     "text": "The floor skirting areas (detailing) must be clean.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "reception-03",
+     "text": "The walls must be clean. There should be no glue residue or marks.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "reception-04",
+     "text": "The windows must be kept clean and free from streaks",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "reception-05",
+     "text": "The window sills & frames must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "reception-06",
+     "text": "The curtains & blinds must be neat and kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "reception-07",
+     "text": "The telephones must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "reception-08",
+     "text": "The Television and stand must be kept clean.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "reception-09",
+     "text": "All pictures and signs should be kept free of dust.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "reception-10",
+     "text": "The switches and plugs must be kept clean.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "reception-11",
+     "text": "The doors must be free from dust. There must be no shoe marks on the door and no dust at the top of the door and handles",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "reception-12",
+     "text": "The door handles must be kept clean.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "reception-13",
+     "text": "The dustbins must be emptied regularly.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "reception-14",
+     "text": "All furniture must be kept clean and free from strong odours.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "reception-15",
+     "text": "The lift must kept be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "reception-16",
+     "text": "The stairs must be kept clean, free of dust or any oil.",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "code": "public-toilets",
+   "name": "PUBLIC TOILETS",
+   "highRisk": false,
+   "items": [
+    {
+     "key": "public-toilets-01",
+     "text": "The toilet exterior and bowl must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "public-toilets-02",
+     "text": "The details where seat connects must be clean (hinges)",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "public-toilets-03",
+     "text": "The walls & Floors should be kept clean.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "public-toilets-04",
+     "text": "The hard to reach areas of the toilet should be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "public-toilets-05",
+     "text": "Toilet lever must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "code": "urinals",
+   "name": "Urinals",
+   "highRisk": false,
+   "items": [
+    {
+     "key": "urinals-01",
+     "text": "There should be no scale in the urinals",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "urinals-02",
+     "text": "The drain must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "urinals-03",
+     "text": "The hard to reach areas must be kept clean.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "urinals-04",
+     "text": "The urinals must have no scale",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "urinals-05",
+     "text": "The drains kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "urinals-06",
+     "text": "Underneath must be hygienically clean",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "code": "basins",
+   "name": "BASINS",
+   "highRisk": false,
+   "items": [
+    {
+     "key": "basins-01",
+     "text": "The hand washing basin must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "basins-02",
+     "text": "The taps and detail around taps must be clean (no lime scale build up)",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "basins-03",
+     "text": "The overflow must be kept clean.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "basins-04",
+     "text": "The hard to reach areas of the basin must be kept clean.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "basins-05",
+     "text": "The basin drains must be clean (no hair)",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "code": "general-cleaning",
+   "name": "GENERAL CLEANING",
+   "highRisk": false,
+   "items": [
+    {
+     "key": "general-cleaning-01",
+     "text": "The shelves, fittings and dispensers must be clean.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "general-cleaning-02",
+     "text": "The bin should have correct colour liners.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "general-cleaning-03",
+     "text": "The bathroom walls should be clean.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "general-cleaning-04",
+     "text": "The bathroom door must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "general-cleaning-05",
+     "text": "The floor must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "general-cleaning-06",
+     "text": "The floor skirting and hard to reach areas should be kept clean.",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "code": "nursing-station",
+   "name": "NURSING STATION",
+   "highRisk": false,
+   "items": [
+    {
+     "key": "nursing-station-01",
+     "text": "The floor must be clean and free of litter.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "nursing-station-02",
+     "text": "The floor must be polished (shine).",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "nursing-station-03",
+     "text": "The hard to reach areas must be kept clean.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "nursing-station-04",
+     "text": "All the telephones must be kept clean.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "nursing-station-05",
+     "text": "The pictures & picture frames and signage must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "nursing-station-06",
+     "text": "The switches and plugs must be kept clean.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "nursing-station-07",
+     "text": "The doors and handles must be kept clean. (No show marks)",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "nursing-station-08",
+     "text": "The high dusting must be done on pelmets and cupboards",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "nursing-station-09",
+     "text": "All the surfaces must be free of dirt build up and dust.",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "code": "ward-kitchen",
+   "name": "WARD KITCHEN",
+   "highRisk": false,
+   "items": [
+    {
+     "key": "ward-kitchen-01",
+     "text": "The floor must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-kitchen-02",
+     "text": "The floor should be polished and shine.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-kitchen-03",
+     "text": "The hard to reach areas of the floors must be kept clean.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-kitchen-04",
+     "text": "The walls must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-kitchen-05",
+     "text": "The windows and window sills must be clean and free of streaks.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-kitchen-06",
+     "text": "The pictures, frames and signs must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-kitchen-07",
+     "text": "The curtains and any blinds must be clean.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-kitchen-08",
+     "text": "Any telephones must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-kitchen-09",
+     "text": "The switches and plugs must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-kitchen-10",
+     "text": "The doors and handles must be clean (No shoe marks)",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-kitchen-11",
+     "text": "High dusting done on top doors, frames and cupboards",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-kitchen-12",
+     "text": "The cupboards and shelvesshould be kept clean and neat.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-kitchen-13",
+     "text": "Working surfaces must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-kitchen-14",
+     "text": "The microwave should be kept clean (no bad smells).",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "code": "passages",
+   "name": "PASSAGES",
+   "highRisk": false,
+   "items": [
+    {
+     "key": "passages-01",
+     "text": "The Floors must be kept clean (sweep with yellow muslin cloth)",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "passages-02",
+     "text": "Floor floor must be polished and have a shine.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "passages-03",
+     "text": "The floor skirting and hard to reach areas (behind the doors) should be kept clean.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "passages-04",
+     "text": "Any steps or stairs must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "passages-05",
+     "text": "Any stairs railings must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "passages-06",
+     "text": "The walls should be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "passages-07",
+     "text": "The windows should be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "passages-08",
+     "text": "High dusting done on window sills, cupboards, pictures & frames",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "passages-09",
+     "text": "Any curtains or blinds and curtains visibly clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "passages-10",
+     "text": "All the switches and plugs clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "passages-11",
+     "text": "All doors and handles must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "code": "ward-hygiene",
+   "name": "WARD HYGIENE",
+   "highRisk": false,
+   "items": [
+    {
+     "key": "ward-hygiene-01",
+     "text": "The floors should be kept clean (sweep with a blue Maslin cloth)",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-hygiene-02",
+     "text": "The floor must be polished and shining.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-hygiene-03",
+     "text": "Are hard to reach areas of the floors clean.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-hygiene-04",
+     "text": "The walls must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-hygiene-05",
+     "text": "The ward hand wash basin must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-hygiene-06",
+     "text": "The taps must be clean with no lime scale",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-hygiene-07",
+     "text": "The basins must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-hygiene-08",
+     "text": "All the dispensers should be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-hygiene-09",
+     "text": "Are all dispensers replenished",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-hygiene-10",
+     "text": "All windows, window sills must be visibly clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-hygiene-11",
+     "text": "Any signs, pictures & frames must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-hygiene-12",
+     "text": "Screen curtains must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-hygiene-13",
+     "text": "All window curtains should be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-hygiene-14",
+     "text": "The Telephones, call buttons and tv remotes must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-hygiene-15",
+     "text": "Television/ TV stand must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-hygiene-16",
+     "text": "The light switches and plugs kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-hygiene-17",
+     "text": "The doors and handles kept clean (no shoe marks at the bottom)",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-hygiene-18",
+     "text": "Cupboards kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-hygiene-19",
+     "text": "Overbed trolley must be clean (including the wheels)",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-hygiene-20",
+     "text": "Bed and bed frames must be clean (including the wheels)",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "ward-hygiene-21",
+     "text": "Drip stand must be clean (don't clean any monitors)",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "code": "patient-room-unit",
+   "name": "PATIENT ROOM / UNIT",
+   "highRisk": false,
+   "items": [
+    {
+     "key": "patient-room-unit-01",
+     "text": "The cable racks kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "patient-room-unit-02",
+     "text": "Bed frame and steps should be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "patient-room-unit-03",
+     "text": "Underneath the bed should be clean and dust free",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "patient-room-unit-04",
+     "text": "The mattress and cover should be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "patient-room-unit-05",
+     "text": "Overbed trolley should be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "patient-room-unit-06",
+     "text": "Bedside locker should be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "patient-room-unit-07",
+     "text": "The chairs should be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "patient-room-unit-08",
+     "text": "All other patient related furniture should be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "code": "general-room-basins",
+   "name": "GENERAL ROOM BASINS",
+   "highRisk": false,
+   "items": [
+    {
+     "key": "general-room-basins-01",
+     "text": "The entire basin including the walls must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "general-room-basins-02",
+     "text": "The taps and detail around taps must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "general-room-basins-03",
+     "text": "The overflow must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "general-room-basins-04",
+     "text": "The hard to reach areas underneath the basins clean.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "general-room-basins-05",
+     "text": "The mirrors kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "general-room-basins-06",
+     "text": "The dustbins must be kept clean and plastic bag neatly placed inside the bin",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "general-room-basins-07",
+     "text": "All dispensers kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "code": "sluice",
+   "name": "SLUICE",
+   "highRisk": true,
+   "items": [
+    {
+     "key": "sluice-01",
+     "text": "The detail inside automatic washer must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "sluice-02",
+     "text": "The spray heads of sluice clean and free from lime scale",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "sluice-03",
+     "text": "Taps clean and free from lime scale",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "sluice-04",
+     "text": "The cleaning equipment used must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "sluice-05",
+     "text": "The basin must be kept clean, unless its in use",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "sluice-06",
+     "text": "Taps and detail around taps must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "sluice-07",
+     "text": "Basin outside and underneath must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "sluice-08",
+     "text": "Overflow of the basin must be clean with no lime scale",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "sluice-09",
+     "text": "Bedpans must be clean and sanitised",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "sluice-10",
+     "text": "The shelves must be clean and dust free",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "sluice-11",
+     "text": "The floors must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "sluice-12",
+     "text": "All the hard to reach areas of doors, floors and walls must be kept clean.",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "code": "cleaning-equipment-trolley",
+   "name": "CLEANING EQUIPMENT & TROLLEY",
+   "highRisk": true,
+   "items": [
+    {
+     "key": "cleaning-equipment-trolley-01",
+     "text": "trolley cart and wheels must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "cleaning-equipment-trolley-02",
+     "text": "Cleaning buckets must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "cleaning-equipment-trolley-03",
+     "text": "Spray bottles are clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "cleaning-equipment-trolley-04",
+     "text": "Spray bottles marked correctly with the correct chemical inside",
+     "severity": "CRITICAL",
+     "weight": 3
+    },
+    {
+     "key": "cleaning-equipment-trolley-05",
+     "text": "Spray bottle spraying mist",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "cleaning-equipment-trolley-06",
+     "text": "There should be correct clour segregation cloths on the trolley ( red, blue and green)",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "cleaning-equipment-trolley-07",
+     "text": "The mop buckets and trolley system must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "cleaning-equipment-trolley-08",
+     "text": "the wringer must be in a working condition",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "cleaning-equipment-trolley-09",
+     "text": "The wet floor signs must be in a clean working condition",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "cleaning-equipment-trolley-10",
+     "text": "masslinn cloth (blue for rooms, & yellow for passages)",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "cleaning-equipment-trolley-11",
+     "text": "Correct pair of gloves in the trolley (household red gloves for toilet, latex gloves for bodily fluids and isolation room)",
+     "severity": "CRITICAL",
+     "weight": 3
+    },
+    {
+     "key": "cleaning-equipment-trolley-12",
+     "text": "Red rubber gloves for removing red waste",
+     "severity": "MAJOR",
+     "weight": 2
+    },
+    {
+     "key": "cleaning-equipment-trolley-13",
+     "text": "High performance duster must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "cleaning-equipment-trolley-14",
+     "text": "Dust pan and broom must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "code": "bathroom-toilet-cleaning-procedure",
+   "name": "BATHROOM & TOILET CLEANING PROCEDURE",
+   "highRisk": true,
+   "items": [
+    {
+     "key": "bathroom-toilet-cleaning-procedure-01",
+     "text": "Washing and sanitizing of hands in the bathroom before touching anything",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bathroom-toilet-cleaning-procedure-02",
+     "text": "Clean and replenish all dispensers",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bathroom-toilet-cleaning-procedure-03",
+     "text": "Flush the toilet before spraying with a sanitary All-Purpose cleaner inside the toilet as well as the outside and the pipes at the back",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bathroom-toilet-cleaning-procedure-04",
+     "text": "Spray the shower, bath, tiles and basin with the same chemical as the above",
+     "severity": "CRITICAL",
+     "weight": 3
+    },
+    {
+     "key": "bathroom-toilet-cleaning-procedure-05",
+     "text": "Treating of visible blood or bodily fluids first and clean before you continue with the rest of the cleaning",
+     "severity": "CRITICAL",
+     "weight": 3
+    },
+    {
+     "key": "bathroom-toilet-cleaning-procedure-06",
+     "text": "Use a green lavette cloth and green scourer pad to clean with a bathroom cleaner",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bathroom-toilet-cleaning-procedure-07",
+     "text": "Start cleaning the shower, shower doors, shower curtains, bath and all tiles, drains and overflows",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bathroom-toilet-cleaning-procedure-08",
+     "text": "Taps and spray heads free from lime scale",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bathroom-toilet-cleaning-procedure-09",
+     "text": "Wash and sanitise your hands before putting on the red household gloves for cleaning the toilet",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bathroom-toilet-cleaning-procedure-10",
+     "text": "Use your toilet brush if you see any visible mess",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bathroom-toilet-cleaning-procedure-11",
+     "text": "Rinse the toilet brush by flushing the toilet water once again",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bathroom-toilet-cleaning-procedure-12",
+     "text": "Shake off excess water from the toilet brush and spray brush with sanitiser",
+     "severity": "CRITICAL",
+     "weight": 3
+    },
+    {
+     "key": "bathroom-toilet-cleaning-procedure-13",
+     "text": "Toilet brush holder must be clean and sanitised",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bathroom-toilet-cleaning-procedure-14",
+     "text": "Use green scourer pad with your toilet bowl cleaner to remove all lime scale and marks underneath rim and where water flow comes into the toilet (Rim of the toilet must be free from any lime scale)",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bathroom-toilet-cleaning-procedure-15",
+     "text": "Use red lavette cloth and detergent to clean and wipe toilet clean on the outside and beneath and the pipes behind",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bathroom-toilet-cleaning-procedure-16",
+     "text": "Wash and sanitise your red gloves before you put in back on the trolley (gloves can be used until it is no longer safe to do so)",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bathroom-toilet-cleaning-procedure-17",
+     "text": "Spray toilet with sanitiser after cleaning and let it dry",
+     "severity": "CRITICAL",
+     "weight": 3
+    },
+    {
+     "key": "bathroom-toilet-cleaning-procedure-18",
+     "text": "Clean basin inside, outside and underneath where there are pipes",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bathroom-toilet-cleaning-procedure-19",
+     "text": "Correct use of masslin: changing cloths frequently, using one room cloths/ blue in wards, theatre, using yellow cloths in passage, use sweeping technique correctly",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bathroom-toilet-cleaning-procedure-20",
+     "text": "Clean basin outlet and overflow",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bathroom-toilet-cleaning-procedure-21",
+     "text": "Bathroom floors should be mopped with a damp flat mop and detergent",
+     "severity": "MAJOR",
+     "weight": 2
+    },
+    {
+     "key": "bathroom-toilet-cleaning-procedure-22",
+     "text": "Complete your checklist behind the door",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "code": "patient-room-cleaning-procedure",
+   "name": "PATIENT ROOM CLEANING PROCEDURE",
+   "highRisk": true,
+   "items": [
+    {
+     "key": "patient-room-cleaning-procedure-01",
+     "text": "Wash and sanitise hands before putting protective cloth / or starting with work",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "patient-room-cleaning-procedure-02",
+     "text": "Clean and replenish all paper, soaps sanitiser dispensers",
+     "severity": "CRITICAL",
+     "weight": 3
+    },
+    {
+     "key": "patient-room-cleaning-procedure-03",
+     "text": "Empty general refuse bin and replace plastic bags with the correct bin liner",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "patient-room-cleaning-procedure-04",
+     "text": "Replace red bag with a new bag and discard full red bag",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "patient-room-cleaning-procedure-05",
+     "text": "Start with high dusting and then to your lower areas",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "patient-room-cleaning-procedure-06",
+     "text": "Clean and dust with a blue lavette cloth, blue bucket with detergent in your water",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "patient-room-cleaning-procedure-07",
+     "text": "Wash Mattress with detergent and spray with sanitiser and leave to dry",
+     "severity": "CRITICAL",
+     "weight": 3
+    },
+    {
+     "key": "patient-room-cleaning-procedure-08",
+     "text": "Clean bed frames, wheels, patient cupboard, overbed trolley, drip stand (no monitors) curtains rails, pictures",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "patient-room-cleaning-procedure-09",
+     "text": "Spray all washed areas with sanitiser after it has been cleaned and wipe door handles with sanitiser",
+     "severity": "CRITICAL",
+     "weight": 3
+    },
+    {
+     "key": "patient-room-cleaning-procedure-10",
+     "text": "Damped washed floor with detergent and dispose of dirty water in sluice",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "patient-room-cleaning-procedure-11",
+     "text": "Complete room checklist that is thoroughly cleaned and sanitised",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "patient-room-cleaning-procedure-12",
+     "text": "Control checks should be performed to ensure that the company cleaners use appropriate disinfectant solution to prevent the growth of any germs and funguses",
+     "severity": "CRITICAL",
+     "weight": 3
+    }
+   ]
+  },
+  {
+   "code": "waste-disposal",
+   "name": "WASTE DISPOSAL",
+   "highRisk": true,
+   "items": [
+    {
+     "key": "waste-disposal-01",
+     "text": "General waste will be discarded in a clear / smoky bag in the yellow rubber bag of the trolley, which must have a clear bag in it for all the rubbish",
+     "severity": "MAJOR",
+     "weight": 2
+    },
+    {
+     "key": "waste-disposal-02",
+     "text": "Remove medical waste in the red bags with your red rubber gloves",
+     "severity": "CRITICAL",
+     "weight": 3
+    },
+    {
+     "key": "waste-disposal-03",
+     "text": "Red bins must be clearly marked with Hospital name, ward no / named and dated",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "waste-disposal-04",
+     "text": "Full red bins will be stored and removed by reputable red waste movers who will discard waste as per government laws",
+     "severity": "MAJOR",
+     "weight": 2
+    },
+    {
+     "key": "waste-disposal-05",
+     "text": "Syringes and needles and medical bottles discarded in small yellow bucket",
+     "severity": "CRITICAL",
+     "weight": 3
+    },
+    {
+     "key": "waste-disposal-06",
+     "text": "Ward name and date on needle container with an expiry date of 90 days or sooner",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "waste-disposal-07",
+     "text": "Drip pipes and drip bags and medicine bottles will be discarded in a yellow drum with red lid. also marked with name and dates",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "code": "staff-bathrooms-toilets",
+   "name": "STAFF BATHROOMS & TOILETS",
+   "highRisk": false,
+   "items": [
+    {
+     "key": "staff-bathrooms-toilets-01",
+     "text": "Dispensers must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "staff-bathrooms-toilets-02",
+     "text": "Dispensers replenished",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "staff-bathrooms-toilets-03",
+     "text": "The bin has correct colour bin liners",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "staff-bathrooms-toilets-04",
+     "text": "Are the bathroom floors clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "staff-bathrooms-toilets-05",
+     "text": "Are the bathroom walls clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "staff-bathrooms-toilets-06",
+     "text": "Are the bathroom doors clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "staff-bathrooms-toilets-07",
+     "text": "All drains / outlets must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "staff-bathrooms-toilets-08",
+     "text": "The floor corners/edges must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "staff-bathrooms-toilets-09",
+     "text": "The floor detail behind door must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "staff-bathrooms-toilets-10",
+     "text": "The floor appearance should look shinny",
+     "severity": "MAJOR",
+     "weight": 2
+    }
+   ]
+  },
+  {
+   "code": "bath-basin",
+   "name": "BATH / BASIN",
+   "highRisk": false,
+   "items": [
+    {
+     "key": "bath-basin-01",
+     "text": "The bath tab should be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bath-basin-02",
+     "text": "The soap dish should be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bath-basin-03",
+     "text": "Overflow must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bath-basin-04",
+     "text": "The bathmat should be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bath-basin-05",
+     "text": "The taps, plugs kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bath-basin-06",
+     "text": "Underneath must be hygienically clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "bath-basin-07",
+     "text": "The drains should be clean with no hair",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "code": "shower",
+   "name": "SHOWER",
+   "highRisk": false,
+   "items": [
+    {
+     "key": "shower-01",
+     "text": "Shower mat should be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "shower-02",
+     "text": "Showerhead should be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "shower-03",
+     "text": "Are the taps clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "shower-04",
+     "text": "Are the drain clean with no hair and dirt",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "shower-05",
+     "text": "Are the shower floors clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "shower-06",
+     "text": "Are the shower wall tiles clean",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "code": "toilet",
+   "name": "TOILET",
+   "highRisk": false,
+   "items": [
+    {
+     "key": "toilet-01",
+     "text": "Detail where seat connects must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "toilet-02",
+     "text": "The detail under the seat (pads) must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "toilet-03",
+     "text": "The toilet bowl should be clean in the inside and outside",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "toilet-04",
+     "text": "The toilet lever must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "code": "linen-management",
+   "name": "LINEN MANAGEMENT",
+   "highRisk": true,
+   "items": [
+    {
+     "key": "linen-management-01",
+     "text": "Wearing of the correct PPE (Mask, mop cap rubber apron)",
+     "severity": "MAJOR",
+     "weight": 2
+    },
+    {
+     "key": "linen-management-02",
+     "text": "Segregation must be adhered to ( there is an entrance and exit)",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "linen-management-03",
+     "text": "Normal dirty linen is transported i laundry trolley",
+     "severity": "MAJOR",
+     "weight": 2
+    },
+    {
+     "key": "linen-management-04",
+     "text": "Isolation linen and linen with bodily fluids must be bagged in a yellow bag",
+     "severity": "CRITICAL",
+     "weight": 3
+    },
+    {
+     "key": "linen-management-05",
+     "text": "Theater and or blood stained linen must be in a red bag",
+     "severity": "MAJOR",
+     "weight": 2
+    },
+    {
+     "key": "linen-management-06",
+     "text": "Blood must be soaked in cold water and treated with a blood stain remover",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "linen-management-07",
+     "text": "Blood linen can go through into machine for normal wash, but after the blood stains have been removed",
+     "severity": "MAJOR",
+     "weight": 2
+    },
+    {
+     "key": "linen-management-08",
+     "text": "Isolation linen is only washed after all other linen has been washed, cleaned out of the laundry",
+     "severity": "CRITICAL",
+     "weight": 3
+    },
+    {
+     "key": "linen-management-09",
+     "text": "A clean container is used to handle washed and dried linen. Clean linen is transported to wards in clean, closed containers or covered carts",
+     "severity": "MAJOR",
+     "weight": 2
+    },
+    {
+     "key": "linen-management-10",
+     "text": "Washing machine and tumble driers must be cleaned after every wash",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "linen-management-11",
+     "text": "All linen is inspected for stains before ironing",
+     "severity": "MAJOR",
+     "weight": 2
+    },
+    {
+     "key": "linen-management-12",
+     "text": "Ironing is done according to the Safe Work Procedure. This includes roller iron, press iron, hand iron.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "linen-management-13",
+     "text": "Linen is checked for mending prior to folding and is folded whilst warm",
+     "severity": "MAJOR",
+     "weight": 2
+    },
+    {
+     "key": "linen-management-14",
+     "text": "The clean linen store is kept clean and dust-free.",
+     "severity": "MAJOR",
+     "weight": 2
+    },
+    {
+     "key": "linen-management-15",
+     "text": "Linen is kept covered while on shelves for longer than 3 days",
+     "severity": "MAJOR",
+     "weight": 2
+    },
+    {
+     "key": "linen-management-16",
+     "text": "Linen stock-takes are performed monthly according to procedure",
+     "severity": "MAJOR",
+     "weight": 2
+    }
+   ]
+  },
+  {
+   "code": "laundry",
+   "name": "LAUNDRY",
+   "highRisk": false,
+   "items": [
+    {
+     "key": "laundry-01",
+     "text": "The floors and corners must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "laundry-02",
+     "text": "The walls must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "laundry-03",
+     "text": "High dusting must be done",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "laundry-04",
+     "text": "Edges and switches must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "laundry-05",
+     "text": "Windows, sills and frames must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "laundry-06",
+     "text": "The doors, handles and frames must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "laundry-07",
+     "text": "Ceilings must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "laundry-08",
+     "text": "The linen trolleys must be kept clean",
+     "severity": "MAJOR",
+     "weight": 2
+    },
+    {
+     "key": "laundry-09",
+     "text": "The work surfaces must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "laundry-10",
+     "text": "Shelves must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "laundry-11",
+     "text": "The cupboards tops and insides must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "laundry-12",
+     "text": "Chairs must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "code": "laundry-equipment",
+   "name": "LAUNDRY EQUIPMENT",
+   "highRisk": false,
+   "items": [
+    {
+     "key": "laundry-equipment-01",
+     "text": "washing machine must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "laundry-equipment-02",
+     "text": "The tumble drier must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "laundry-equipment-03",
+     "text": "Wheels of cleaning equipment cleaned",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "laundry-equipment-04",
+     "text": "Hand basin or general sink must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "laundry-equipment-05",
+     "text": "The tiles at the basin must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "laundry-equipment-06",
+     "text": "The taps must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "laundry-equipment-07",
+     "text": "The plugs and overflows must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "laundry-equipment-08",
+     "text": "Dustbins must be clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "laundry-equipment-09",
+     "text": "Soap dispensers kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "laundry-equipment-10",
+     "text": "Towel dispenser kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "laundry-equipment-11",
+     "text": "Dispensers must be replenished",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "laundry-equipment-12",
+     "text": "Chemical unit neatly packed and clean",
+     "severity": "CRITICAL",
+     "weight": 3
+    }
+   ]
+  },
+  {
+   "code": "housekeeping-office-storeroom",
+   "name": "HOUSEKEEPING OFFICE / STOREROOM",
+   "highRisk": false,
+   "items": [
+    {
+     "key": "housekeeping-office-storeroom-01",
+     "text": "The office must be neat and organized.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "housekeeping-office-storeroom-02",
+     "text": "Nothing must be stored on the floors",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "housekeeping-office-storeroom-03",
+     "text": "All furniture and surfaces kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "housekeeping-office-storeroom-04",
+     "text": "Telephone must be kept clean",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "housekeeping-office-storeroom-05",
+     "text": "All computer equipment should be kept clean.",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  },
+  {
+   "code": "documentation",
+   "name": "DOCUMENTATION",
+   "highRisk": false,
+   "items": [
+    {
+     "key": "documentation-01",
+     "text": "Daily manager/supervisor checklist completed and kept up to date.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "documentation-02",
+     "text": "Bathroom checklist kept up to date.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "documentation-03",
+     "text": "Sanitary cleaning verification checklist kept up to date.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "documentation-04",
+     "text": "Terminal cleaning verification checklist kept up to date.",
+     "severity": "MAJOR",
+     "weight": 2
+    },
+    {
+     "key": "documentation-05",
+     "text": "Housekeeping management checklist should be done and records kept",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "documentation-06",
+     "text": "The previous audit's Corrective action report must be printed and signed with evidence of corrective action done.",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "documentation-07",
+     "text": "Staff hygiene & PPE requirements must be inspected on a weekly basis",
+     "severity": "MAJOR",
+     "weight": 2
+    },
+    {
+     "key": "documentation-08",
+     "text": "Staff should be trained on all aspects hygiene and cleaning. Records must be kept (Vital topics)",
+     "severity": "MINOR",
+     "weight": 1
+    },
+    {
+     "key": "documentation-09",
+     "text": "Laundry linen counts must be done monthly",
+     "severity": "MAJOR",
+     "weight": 2
+    },
+    {
+     "key": "documentation-10",
+     "text": "Laundry linen must be weighed ( per load)",
+     "severity": "MAJOR",
+     "weight": 2
+    },
+    {
+     "key": "documentation-11",
+     "text": "Washing machine and tumble drier cleaning checklist kept up to date",
+     "severity": "MINOR",
+     "weight": 1
+    }
+   ]
+  }
+ ]
+}

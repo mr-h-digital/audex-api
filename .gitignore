@@ -1,0 +1,28 @@
+# Maven
+/target/
+pom.xml.versionsBackup
+
+# Java crash dumps and runtime logs
+hs_err_pid*
+replay_pid*
+*.log
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# IDEs
+.idea/
+.vscode/
+.classpath
+.project
+.settings/
+*.iml
+
+# Operating system
+.DS_Store
+Thumbs.db
+
+# Claude and Claude Code files (case-insensitive across all directories)
+*[Cc][Ll][Aa][Uu][Dd][Ee]*

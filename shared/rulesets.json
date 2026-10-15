@@ -1,0 +1,46 @@
+[
+ {
+  "code": "WPC_V1",
+  "name": "WPC current rules",
+  "compliantMinTenths": 950,
+  "notYetMinTenths": 850,
+  "criticalNonCompliantOverride": true,
+  "criticalPartialCap": {
+   "enabled": false
+  },
+  "majorFailureCap": {
+   "enabled": false,
+   "count": 3
+  },
+  "highRiskSectionFloor": {
+   "enabled": false,
+   "minTenths": 850
+  },
+  "naReviewTrigger": {
+   "enabled": false,
+   "maxShareTenths": 100
+  }
+ },
+ {
+  "code": "WPC_V2_PROPOSED",
+  "name": "WPC proposed rules (pending IPC approval)",
+  "compliantMinTenths": 950,
+  "notYetMinTenths": 850,
+  "criticalNonCompliantOverride": true,
+  "criticalPartialCap": {
+   "enabled": true
+  },
+  "majorFailureCap": {
+   "enabled": true,
+   "count": 3
+  },
+  "highRiskSectionFloor": {
+   "enabled": true,
+   "minTenths": 850
+  },
+  "naReviewTrigger": {
+   "enabled": true,
+   "maxShareTenths": 100
+  }
+ }
+]

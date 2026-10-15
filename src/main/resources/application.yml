@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/audex}
+    username: ${PGUSER:audex}
+    password: ${PGPASSWORD:audex}
+  flyway:
+    enabled: true
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: always   # the app shows these plain-English messages (for example "Username or password is incorrect.")
+
+audex:
+  app-url: ${AUDEX_APP_URL:http://localhost:5173}
+  auth:
+    # First-time setup is only possible while no account exists, and only with this code. Leave unset to switch setup off.
+    setup-code: ${AUDEX_SETUP_CODE:}
+  mail:
+    from: ${AUDEX_MAIL_FROM:no-reply@audex.local}
+  allowed-origins: ${AUDEX_ALLOWED_ORIGINS:http://localhost:5173}
+  storage:
+    # Names match the variables a Railway storage bucket provides; leave BUCKET unset to run without photo storage.
+    bucket: ${BUCKET:}
+    endpoint: ${ENDPOINT:}
+    region: ${REGION:auto}
+    access-key: ${ACCESS_KEY_ID:}
+    secret-key: ${SECRET_ACCESS_KEY:}

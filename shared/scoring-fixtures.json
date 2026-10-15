@@ -1,0 +1,815 @@
+[
+ {
+  "name": "all compliant [WPC_V1]",
+  "ruleSet": "WPC_V1",
+  "default": "COMPLIANT",
+  "overrides": {},
+  "expected": {
+   "status": "COMPLIANT",
+   "earnedHalf": 644,
+   "possibleHalf": 644,
+   "criticalFailures": 0,
+   "triggers": [],
+   "flags": []
+  }
+ },
+ {
+  "name": "all compliant [WPC_V2_PROPOSED]",
+  "ruleSet": "WPC_V2_PROPOSED",
+  "default": "COMPLIANT",
+  "overrides": {},
+  "expected": {
+   "status": "COMPLIANT",
+   "earnedHalf": 644,
+   "possibleHalf": 644,
+   "criticalFailures": 0,
+   "triggers": [],
+   "flags": []
+  }
+ },
+ {
+  "name": "8 Major non-compliant [WPC_V1]",
+  "ruleSet": "WPC_V1",
+  "default": "COMPLIANT",
+  "overrides": {
+   "staff-bathrooms-toilets-10": "NON_COMPLIANT",
+   "laundry-08": "NON_COMPLIANT",
+   "documentation-04": "NON_COMPLIANT",
+   "documentation-07": "NON_COMPLIANT",
+   "documentation-09": "NON_COMPLIANT",
+   "documentation-10": "NON_COMPLIANT",
+   "linen-management-01": "NON_COMPLIANT",
+   "linen-management-03": "NON_COMPLIANT"
+  },
+  "expected": {
+   "status": "COMPLIANT",
+   "earnedHalf": 612,
+   "possibleHalf": 644,
+   "criticalFailures": 0,
+   "triggers": [],
+   "flags": []
+  }
+ },
+ {
+  "name": "8 Major non-compliant [WPC_V2_PROPOSED]",
+  "ruleSet": "WPC_V2_PROPOSED",
+  "default": "COMPLIANT",
+  "overrides": {
+   "staff-bathrooms-toilets-10": "NON_COMPLIANT",
+   "laundry-08": "NON_COMPLIANT",
+   "documentation-04": "NON_COMPLIANT",
+   "documentation-07": "NON_COMPLIANT",
+   "documentation-09": "NON_COMPLIANT",
+   "documentation-10": "NON_COMPLIANT",
+   "linen-management-01": "NON_COMPLIANT",
+   "linen-management-03": "NON_COMPLIANT"
+  },
+  "expected": {
+   "status": "NOT_YET_COMPLIANT",
+   "earnedHalf": 612,
+   "possibleHalf": 644,
+   "criticalFailures": 0,
+   "triggers": [
+    "majorFailureCap"
+   ],
+   "flags": []
+  }
+ },
+ {
+  "name": "2 Major non-compliant stays under the Major cap [WPC_V1]",
+  "ruleSet": "WPC_V1",
+  "default": "COMPLIANT",
+  "overrides": {
+   "cleaning-equipment-trolley-12": "NON_COMPLIANT",
+   "bathroom-toilet-cleaning-procedure-21": "NON_COMPLIANT"
+  },
+  "expected": {
+   "status": "COMPLIANT",
+   "earnedHalf": 636,
+   "possibleHalf": 644,
+   "criticalFailures": 0,
+   "triggers": [],
+   "flags": []
+  }
+ },
+ {
+  "name": "2 Major non-compliant stays under the Major cap [WPC_V2_PROPOSED]",
+  "ruleSet": "WPC_V2_PROPOSED",
+  "default": "COMPLIANT",
+  "overrides": {
+   "cleaning-equipment-trolley-12": "NON_COMPLIANT",
+   "bathroom-toilet-cleaning-procedure-21": "NON_COMPLIANT"
+  },
+  "expected": {
+   "status": "COMPLIANT",
+   "earnedHalf": 636,
+   "possibleHalf": 644,
+   "criticalFailures": 0,
+   "triggers": [],
+   "flags": []
+  }
+ },
+ {
+  "name": "4 Chemical Critical items partial [WPC_V1]",
+  "ruleSet": "WPC_V1",
+  "default": "COMPLIANT",
+  "overrides": {
+   "chemicals-chemical-storage-01": "PARTIALLY_COMPLIANT",
+   "chemicals-chemical-storage-02": "PARTIALLY_COMPLIANT",
+   "chemicals-chemical-storage-03": "PARTIALLY_COMPLIANT",
+   "chemicals-chemical-storage-04": "PARTIALLY_COMPLIANT"
+  },
+  "expected": {
+   "status": "COMPLIANT",
+   "earnedHalf": 632,
+   "possibleHalf": 644,
+   "criticalFailures": 0,
+   "triggers": [],
+   "flags": []
+  }
+ },
+ {
+  "name": "4 Chemical Critical items partial [WPC_V2_PROPOSED]",
+  "ruleSet": "WPC_V2_PROPOSED",
+  "default": "COMPLIANT",
+  "overrides": {
+   "chemicals-chemical-storage-01": "PARTIALLY_COMPLIANT",
+   "chemicals-chemical-storage-02": "PARTIALLY_COMPLIANT",
+   "chemicals-chemical-storage-03": "PARTIALLY_COMPLIANT",
+   "chemicals-chemical-storage-04": "PARTIALLY_COMPLIANT"
+  },
+  "expected": {
+   "status": "NOT_YET_COMPLIANT",
+   "earnedHalf": 632,
+   "possibleHalf": 644,
+   "criticalFailures": 0,
+   "triggers": [
+    "criticalPartialCap",
+    "highRiskSectionFloor"
+   ],
+   "flags": []
+  }
+ },
+ {
+  "name": "Waste Disposal 2 Major + 3 Minor non-compliant [WPC_V1]",
+  "ruleSet": "WPC_V1",
+  "default": "COMPLIANT",
+  "overrides": {
+   "waste-disposal-01": "NON_COMPLIANT",
+   "waste-disposal-04": "NON_COMPLIANT",
+   "waste-disposal-03": "NON_COMPLIANT",
+   "waste-disposal-06": "NON_COMPLIANT",
+   "waste-disposal-07": "NON_COMPLIANT"
+  },
+  "expected": {
+   "status": "COMPLIANT",
+   "earnedHalf": 630,
+   "possibleHalf": 644,
+   "criticalFailures": 0,
+   "triggers": [],
+   "flags": []
+  }
+ },
+ {
+  "name": "Waste Disposal 2 Major + 3 Minor non-compliant [WPC_V2_PROPOSED]",
+  "ruleSet": "WPC_V2_PROPOSED",
+  "default": "COMPLIANT",
+  "overrides": {
+   "waste-disposal-01": "NON_COMPLIANT",
+   "waste-disposal-04": "NON_COMPLIANT",
+   "waste-disposal-03": "NON_COMPLIANT",
+   "waste-disposal-06": "NON_COMPLIANT",
+   "waste-disposal-07": "NON_COMPLIANT"
+  },
+  "expected": {
+   "status": "NOT_YET_COMPLIANT",
+   "earnedHalf": 630,
+   "possibleHalf": 644,
+   "criticalFailures": 0,
+   "triggers": [
+    "highRiskSectionFloor"
+   ],
+   "flags": []
+  }
+ },
+ {
+  "name": "one Critical non-compliant [WPC_V1]",
+  "ruleSet": "WPC_V1",
+  "default": "COMPLIANT",
+  "overrides": {
+   "bathroom-toilet-cleaning-procedure-04": "NON_COMPLIANT"
+  },
+  "expected": {
+   "status": "NON_COMPLIANT",
+   "earnedHalf": 638,
+   "possibleHalf": 644,
+   "criticalFailures": 1,
+   "triggers": [],
+   "flags": []
+  }
+ },
+ {
+  "name": "one Critical non-compliant [WPC_V2_PROPOSED]",
+  "ruleSet": "WPC_V2_PROPOSED",
+  "default": "COMPLIANT",
+  "overrides": {
+   "bathroom-toilet-cleaning-procedure-04": "NON_COMPLIANT"
+  },
+  "expected": {
+   "status": "NON_COMPLIANT",
+   "earnedHalf": 638,
+   "possibleHalf": 644,
+   "criticalFailures": 1,
+   "triggers": [],
+   "flags": []
+  }
+ },
+ {
+  "name": "Critical failure plus 8 Major failures stays Non-Compliant [WPC_V1]",
+  "ruleSet": "WPC_V1",
+  "default": "COMPLIANT",
+  "overrides": {
+   "bathroom-toilet-cleaning-procedure-04": "NON_COMPLIANT",
+   "staff-bathrooms-toilets-10": "NON_COMPLIANT",
+   "laundry-08": "NON_COMPLIANT",
+   "documentation-04": "NON_COMPLIANT",
+   "documentation-07": "NON_COMPLIANT",
+   "documentation-09": "NON_COMPLIANT",
+   "documentation-10": "NON_COMPLIANT",
+   "linen-management-01": "NON_COMPLIANT",
+   "linen-management-03": "NON_COMPLIANT"
+  },
+  "expected": {
+   "status": "NON_COMPLIANT",
+   "earnedHalf": 606,
+   "possibleHalf": 644,
+   "criticalFailures": 1,
+   "triggers": [],
+   "flags": []
+  }
+ },
+ {
+  "name": "Critical failure plus 8 Major failures stays Non-Compliant [WPC_V2_PROPOSED]",
+  "ruleSet": "WPC_V2_PROPOSED",
+  "default": "COMPLIANT",
+  "overrides": {
+   "bathroom-toilet-cleaning-procedure-04": "NON_COMPLIANT",
+   "staff-bathrooms-toilets-10": "NON_COMPLIANT",
+   "laundry-08": "NON_COMPLIANT",
+   "documentation-04": "NON_COMPLIANT",
+   "documentation-07": "NON_COMPLIANT",
+   "documentation-09": "NON_COMPLIANT",
+   "documentation-10": "NON_COMPLIANT",
+   "linen-management-01": "NON_COMPLIANT",
+   "linen-management-03": "NON_COMPLIANT"
+  },
+  "expected": {
+   "status": "NON_COMPLIANT",
+   "earnedHalf": 606,
+   "possibleHalf": 644,
+   "criticalFailures": 1,
+   "triggers": [
+    "majorFailureCap"
+   ],
+   "flags": []
+  }
+ },
+ {
+  "name": "unanswered item [WPC_V1]",
+  "ruleSet": "WPC_V1",
+  "default": "COMPLIANT",
+  "overrides": {
+   "chemicals-chemical-storage-05": null
+  },
+  "expected": {
+   "status": "INCOMPLETE",
+   "earnedHalf": 642,
+   "possibleHalf": 642,
+   "criticalFailures": 0,
+   "triggers": [],
+   "flags": []
+  }
+ },
+ {
+  "name": "unanswered item [WPC_V2_PROPOSED]",
+  "ruleSet": "WPC_V2_PROPOSED",
+  "default": "COMPLIANT",
+  "overrides": {
+   "chemicals-chemical-storage-05": null
+  },
+  "expected": {
+   "status": "INCOMPLETE",
+   "earnedHalf": 642,
+   "possibleHalf": 642,
+   "criticalFailures": 0,
+   "triggers": [],
+   "flags": []
+  }
+ },
+ {
+  "name": "30 Minor items N/A (over 10%) [WPC_V1]",
+  "ruleSet": "WPC_V1",
+  "default": "COMPLIANT",
+  "overrides": {
+   "chemicals-chemical-storage-05": "NA",
+   "chemicals-chemical-storage-06": "NA",
+   "reception-01": "NA",
+   "reception-02": "NA",
+   "reception-03": "NA",
+   "reception-04": "NA",
+   "reception-05": "NA",
+   "reception-06": "NA",
+   "reception-07": "NA",
+   "reception-08": "NA",
+   "reception-09": "NA",
+   "reception-10": "NA",
+   "reception-11": "NA",
+   "reception-12": "NA",
+   "reception-13": "NA",
+   "reception-14": "NA",
+   "reception-15": "NA",
+   "reception-16": "NA",
+   "public-toilets-01": "NA",
+   "public-toilets-02": "NA",
+   "public-toilets-03": "NA",
+   "public-toilets-04": "NA",
+   "public-toilets-05": "NA",
+   "urinals-01": "NA",
+   "urinals-02": "NA",
+   "urinals-03": "NA",
+   "urinals-04": "NA",
+   "urinals-05": "NA",
+   "urinals-06": "NA",
+   "basins-01": "NA"
+  },
+  "expected": {
+   "status": "COMPLIANT",
+   "earnedHalf": 584,
+   "possibleHalf": 584,
+   "criticalFailures": 0,
+   "triggers": [],
+   "flags": []
+  }
+ },
+ {
+  "name": "30 Minor items N/A (over 10%) [WPC_V2_PROPOSED]",
+  "ruleSet": "WPC_V2_PROPOSED",
+  "default": "COMPLIANT",
+  "overrides": {
+   "chemicals-chemical-storage-05": "NA",
+   "chemicals-chemical-storage-06": "NA",
+   "reception-01": "NA",
+   "reception-02": "NA",
+   "reception-03": "NA",
+   "reception-04": "NA",
+   "reception-05": "NA",
+   "reception-06": "NA",
+   "reception-07": "NA",
+   "reception-08": "NA",
+   "reception-09": "NA",
+   "reception-10": "NA",
+   "reception-11": "NA",
+   "reception-12": "NA",
+   "reception-13": "NA",
+   "reception-14": "NA",
+   "reception-15": "NA",
+   "reception-16": "NA",
+   "public-toilets-01": "NA",
+   "public-toilets-02": "NA",
+   "public-toilets-03": "NA",
+   "public-toilets-04": "NA",
+   "public-toilets-05": "NA",
+   "urinals-01": "NA",
+   "urinals-02": "NA",
+   "urinals-03": "NA",
+   "urinals-04": "NA",
+   "urinals-05": "NA",
+   "urinals-06": "NA",
+   "basins-01": "NA"
+  },
+  "expected": {
+   "status": "COMPLIANT",
+   "earnedHalf": 584,
+   "possibleHalf": 584,
+   "criticalFailures": 0,
+   "triggers": [],
+   "flags": [
+    "naReview"
+   ]
+  }
+ },
+ {
+  "name": "below 85%: 60 Minor non-compliant [WPC_V1]",
+  "ruleSet": "WPC_V1",
+  "default": "COMPLIANT",
+  "overrides": {
+   "chemicals-chemical-storage-05": "NON_COMPLIANT",
+   "chemicals-chemical-storage-06": "NON_COMPLIANT",
+   "reception-01": "NON_COMPLIANT",
+   "reception-02": "NON_COMPLIANT",
+   "reception-03": "NON_COMPLIANT",
+   "reception-04": "NON_COMPLIANT",
+   "reception-05": "NON_COMPLIANT",
+   "reception-06": "NON_COMPLIANT",
+   "reception-07": "NON_COMPLIANT",
+   "reception-08": "NON_COMPLIANT",
+   "reception-09": "NON_COMPLIANT",
+   "reception-10": "NON_COMPLIANT",
+   "reception-11": "NON_COMPLIANT",
+   "reception-12": "NON_COMPLIANT",
+   "reception-13": "NON_COMPLIANT",
+   "reception-14": "NON_COMPLIANT",
+   "reception-15": "NON_COMPLIANT",
+   "reception-16": "NON_COMPLIANT",
+   "public-toilets-01": "NON_COMPLIANT",
+   "public-toilets-02": "NON_COMPLIANT",
+   "public-toilets-03": "NON_COMPLIANT",
+   "public-toilets-04": "NON_COMPLIANT",
+   "public-toilets-05": "NON_COMPLIANT",
+   "urinals-01": "NON_COMPLIANT",
+   "urinals-02": "NON_COMPLIANT",
+   "urinals-03": "NON_COMPLIANT",
+   "urinals-04": "NON_COMPLIANT",
+   "urinals-05": "NON_COMPLIANT",
+   "urinals-06": "NON_COMPLIANT",
+   "basins-01": "NON_COMPLIANT",
+   "basins-02": "NON_COMPLIANT",
+   "basins-03": "NON_COMPLIANT",
+   "basins-04": "NON_COMPLIANT",
+   "basins-05": "NON_COMPLIANT",
+   "general-cleaning-01": "NON_COMPLIANT",
+   "general-cleaning-02": "NON_COMPLIANT",
+   "general-cleaning-03": "NON_COMPLIANT",
+   "general-cleaning-04": "NON_COMPLIANT",
+   "general-cleaning-05": "NON_COMPLIANT",
+   "general-cleaning-06": "NON_COMPLIANT",
+   "nursing-station-01": "NON_COMPLIANT",
+   "nursing-station-02": "NON_COMPLIANT",
+   "nursing-station-03": "NON_COMPLIANT",
+   "nursing-station-04": "NON_COMPLIANT",
+   "nursing-station-05": "NON_COMPLIANT",
+   "nursing-station-06": "NON_COMPLIANT",
+   "nursing-station-07": "NON_COMPLIANT",
+   "nursing-station-08": "NON_COMPLIANT",
+   "nursing-station-09": "NON_COMPLIANT",
+   "ward-kitchen-01": "NON_COMPLIANT",
+   "ward-kitchen-02": "NON_COMPLIANT",
+   "ward-kitchen-03": "NON_COMPLIANT",
+   "ward-kitchen-04": "NON_COMPLIANT",
+   "ward-kitchen-05": "NON_COMPLIANT",
+   "ward-kitchen-06": "NON_COMPLIANT",
+   "ward-kitchen-07": "NON_COMPLIANT",
+   "ward-kitchen-08": "NON_COMPLIANT",
+   "ward-kitchen-09": "NON_COMPLIANT",
+   "ward-kitchen-10": "NON_COMPLIANT",
+   "ward-kitchen-11": "NON_COMPLIANT"
+  },
+  "expected": {
+   "status": "NON_COMPLIANT",
+   "earnedHalf": 524,
+   "possibleHalf": 644,
+   "criticalFailures": 0,
+   "triggers": [],
+   "flags": []
+  }
+ },
+ {
+  "name": "below 85%: 60 Minor non-compliant [WPC_V2_PROPOSED]",
+  "ruleSet": "WPC_V2_PROPOSED",
+  "default": "COMPLIANT",
+  "overrides": {
+   "chemicals-chemical-storage-05": "NON_COMPLIANT",
+   "chemicals-chemical-storage-06": "NON_COMPLIANT",
+   "reception-01": "NON_COMPLIANT",
+   "reception-02": "NON_COMPLIANT",
+   "reception-03": "NON_COMPLIANT",
+   "reception-04": "NON_COMPLIANT",
+   "reception-05": "NON_COMPLIANT",
+   "reception-06": "NON_COMPLIANT",
+   "reception-07": "NON_COMPLIANT",
+   "reception-08": "NON_COMPLIANT",
+   "reception-09": "NON_COMPLIANT",
+   "reception-10": "NON_COMPLIANT",
+   "reception-11": "NON_COMPLIANT",
+   "reception-12": "NON_COMPLIANT",
+   "reception-13": "NON_COMPLIANT",
+   "reception-14": "NON_COMPLIANT",
+   "reception-15": "NON_COMPLIANT",
+   "reception-16": "NON_COMPLIANT",
+   "public-toilets-01": "NON_COMPLIANT",
+   "public-toilets-02": "NON_COMPLIANT",
+   "public-toilets-03": "NON_COMPLIANT",
+   "public-toilets-04": "NON_COMPLIANT",
+   "public-toilets-05": "NON_COMPLIANT",
+   "urinals-01": "NON_COMPLIANT",
+   "urinals-02": "NON_COMPLIANT",
+   "urinals-03": "NON_COMPLIANT",
+   "urinals-04": "NON_COMPLIANT",
+   "urinals-05": "NON_COMPLIANT",
+   "urinals-06": "NON_COMPLIANT",
+   "basins-01": "NON_COMPLIANT",
+   "basins-02": "NON_COMPLIANT",
+   "basins-03": "NON_COMPLIANT",
+   "basins-04": "NON_COMPLIANT",
+   "basins-05": "NON_COMPLIANT",
+   "general-cleaning-01": "NON_COMPLIANT",
+   "general-cleaning-02": "NON_COMPLIANT",
+   "general-cleaning-03": "NON_COMPLIANT",
+   "general-cleaning-04": "NON_COMPLIANT",
+   "general-cleaning-05": "NON_COMPLIANT",
+   "general-cleaning-06": "NON_COMPLIANT",
+   "nursing-station-01": "NON_COMPLIANT",
+   "nursing-station-02": "NON_COMPLIANT",
+   "nursing-station-03": "NON_COMPLIANT",
+   "nursing-station-04": "NON_COMPLIANT",
+   "nursing-station-05": "NON_COMPLIANT",
+   "nursing-station-06": "NON_COMPLIANT",
+   "nursing-station-07": "NON_COMPLIANT",
+   "nursing-station-08": "NON_COMPLIANT",
+   "nursing-station-09": "NON_COMPLIANT",
+   "ward-kitchen-01": "NON_COMPLIANT",
+   "ward-kitchen-02": "NON_COMPLIANT",
+   "ward-kitchen-03": "NON_COMPLIANT",
+   "ward-kitchen-04": "NON_COMPLIANT",
+   "ward-kitchen-05": "NON_COMPLIANT",
+   "ward-kitchen-06": "NON_COMPLIANT",
+   "ward-kitchen-07": "NON_COMPLIANT",
+   "ward-kitchen-08": "NON_COMPLIANT",
+   "ward-kitchen-09": "NON_COMPLIANT",
+   "ward-kitchen-10": "NON_COMPLIANT",
+   "ward-kitchen-11": "NON_COMPLIANT"
+  },
+  "expected": {
+   "status": "NON_COMPLIANT",
+   "earnedHalf": 524,
+   "possibleHalf": 644,
+   "criticalFailures": 0,
+   "triggers": [],
+   "flags": []
+  }
+ },
+ {
+  "name": "exactly 95.0%: 2 N/A + 16 Minor non-compliant [WPC_V1]",
+  "ruleSet": "WPC_V1",
+  "default": "COMPLIANT",
+  "overrides": {
+   "chemicals-chemical-storage-05": "NA",
+   "chemicals-chemical-storage-06": "NA",
+   "reception-01": "NON_COMPLIANT",
+   "reception-02": "NON_COMPLIANT",
+   "reception-03": "NON_COMPLIANT",
+   "reception-04": "NON_COMPLIANT",
+   "reception-05": "NON_COMPLIANT",
+   "reception-06": "NON_COMPLIANT",
+   "reception-07": "NON_COMPLIANT",
+   "reception-08": "NON_COMPLIANT",
+   "reception-09": "NON_COMPLIANT",
+   "reception-10": "NON_COMPLIANT",
+   "reception-11": "NON_COMPLIANT",
+   "reception-12": "NON_COMPLIANT",
+   "reception-13": "NON_COMPLIANT",
+   "reception-14": "NON_COMPLIANT",
+   "reception-15": "NON_COMPLIANT",
+   "reception-16": "NON_COMPLIANT"
+  },
+  "expected": {
+   "status": "COMPLIANT",
+   "earnedHalf": 608,
+   "possibleHalf": 640,
+   "criticalFailures": 0,
+   "triggers": [],
+   "flags": []
+  }
+ },
+ {
+  "name": "exactly 95.0%: 2 N/A + 16 Minor non-compliant [WPC_V2_PROPOSED]",
+  "ruleSet": "WPC_V2_PROPOSED",
+  "default": "COMPLIANT",
+  "overrides": {
+   "chemicals-chemical-storage-05": "NA",
+   "chemicals-chemical-storage-06": "NA",
+   "reception-01": "NON_COMPLIANT",
+   "reception-02": "NON_COMPLIANT",
+   "reception-03": "NON_COMPLIANT",
+   "reception-04": "NON_COMPLIANT",
+   "reception-05": "NON_COMPLIANT",
+   "reception-06": "NON_COMPLIANT",
+   "reception-07": "NON_COMPLIANT",
+   "reception-08": "NON_COMPLIANT",
+   "reception-09": "NON_COMPLIANT",
+   "reception-10": "NON_COMPLIANT",
+   "reception-11": "NON_COMPLIANT",
+   "reception-12": "NON_COMPLIANT",
+   "reception-13": "NON_COMPLIANT",
+   "reception-14": "NON_COMPLIANT",
+   "reception-15": "NON_COMPLIANT",
+   "reception-16": "NON_COMPLIANT"
+  },
+  "expected": {
+   "status": "COMPLIANT",
+   "earnedHalf": 608,
+   "possibleHalf": 640,
+   "criticalFailures": 0,
+   "triggers": [],
+   "flags": []
+  }
+ },
+ {
+  "name": "just under 95%: as above plus one Minor partial [WPC_V1]",
+  "ruleSet": "WPC_V1",
+  "default": "COMPLIANT",
+  "overrides": {
+   "chemicals-chemical-storage-05": "NA",
+   "chemicals-chemical-storage-06": "NA",
+   "reception-01": "NON_COMPLIANT",
+   "reception-02": "NON_COMPLIANT",
+   "reception-03": "NON_COMPLIANT",
+   "reception-04": "NON_COMPLIANT",
+   "reception-05": "NON_COMPLIANT",
+   "reception-06": "NON_COMPLIANT",
+   "reception-07": "NON_COMPLIANT",
+   "reception-08": "NON_COMPLIANT",
+   "reception-09": "NON_COMPLIANT",
+   "reception-10": "NON_COMPLIANT",
+   "reception-11": "NON_COMPLIANT",
+   "reception-12": "NON_COMPLIANT",
+   "reception-13": "NON_COMPLIANT",
+   "reception-14": "NON_COMPLIANT",
+   "reception-15": "NON_COMPLIANT",
+   "reception-16": "NON_COMPLIANT",
+   "public-toilets-01": "PARTIALLY_COMPLIANT"
+  },
+  "expected": {
+   "status": "NOT_YET_COMPLIANT",
+   "earnedHalf": 607,
+   "possibleHalf": 640,
+   "criticalFailures": 0,
+   "triggers": [],
+   "flags": []
+  }
+ },
+ {
+  "name": "just under 95%: as above plus one Minor partial [WPC_V2_PROPOSED]",
+  "ruleSet": "WPC_V2_PROPOSED",
+  "default": "COMPLIANT",
+  "overrides": {
+   "chemicals-chemical-storage-05": "NA",
+   "chemicals-chemical-storage-06": "NA",
+   "reception-01": "NON_COMPLIANT",
+   "reception-02": "NON_COMPLIANT",
+   "reception-03": "NON_COMPLIANT",
+   "reception-04": "NON_COMPLIANT",
+   "reception-05": "NON_COMPLIANT",
+   "reception-06": "NON_COMPLIANT",
+   "reception-07": "NON_COMPLIANT",
+   "reception-08": "NON_COMPLIANT",
+   "reception-09": "NON_COMPLIANT",
+   "reception-10": "NON_COMPLIANT",
+   "reception-11": "NON_COMPLIANT",
+   "reception-12": "NON_COMPLIANT",
+   "reception-13": "NON_COMPLIANT",
+   "reception-14": "NON_COMPLIANT",
+   "reception-15": "NON_COMPLIANT",
+   "reception-16": "NON_COMPLIANT",
+   "public-toilets-01": "PARTIALLY_COMPLIANT"
+  },
+  "expected": {
+   "status": "NOT_YET_COMPLIANT",
+   "earnedHalf": 607,
+   "possibleHalf": 640,
+   "criticalFailures": 0,
+   "triggers": [],
+   "flags": []
+  }
+ },
+ {
+  "name": "exactly 85.0%: 2 N/A + 48 Minor non-compliant [WPC_V1]",
+  "ruleSet": "WPC_V1",
+  "default": "COMPLIANT",
+  "overrides": {
+   "chemicals-chemical-storage-05": "NA",
+   "chemicals-chemical-storage-06": "NA",
+   "reception-01": "NON_COMPLIANT",
+   "reception-02": "NON_COMPLIANT",
+   "reception-03": "NON_COMPLIANT",
+   "reception-04": "NON_COMPLIANT",
+   "reception-05": "NON_COMPLIANT",
+   "reception-06": "NON_COMPLIANT",
+   "reception-07": "NON_COMPLIANT",
+   "reception-08": "NON_COMPLIANT",
+   "reception-09": "NON_COMPLIANT",
+   "reception-10": "NON_COMPLIANT",
+   "reception-11": "NON_COMPLIANT",
+   "reception-12": "NON_COMPLIANT",
+   "reception-13": "NON_COMPLIANT",
+   "reception-14": "NON_COMPLIANT",
+   "reception-15": "NON_COMPLIANT",
+   "reception-16": "NON_COMPLIANT",
+   "public-toilets-01": "NON_COMPLIANT",
+   "public-toilets-02": "NON_COMPLIANT",
+   "public-toilets-03": "NON_COMPLIANT",
+   "public-toilets-04": "NON_COMPLIANT",
+   "public-toilets-05": "NON_COMPLIANT",
+   "urinals-01": "NON_COMPLIANT",
+   "urinals-02": "NON_COMPLIANT",
+   "urinals-03": "NON_COMPLIANT",
+   "urinals-04": "NON_COMPLIANT",
+   "urinals-05": "NON_COMPLIANT",
+   "urinals-06": "NON_COMPLIANT",
+   "basins-01": "NON_COMPLIANT",
+   "basins-02": "NON_COMPLIANT",
+   "basins-03": "NON_COMPLIANT",
+   "basins-04": "NON_COMPLIANT",
+   "basins-05": "NON_COMPLIANT",
+   "general-cleaning-01": "NON_COMPLIANT",
+   "general-cleaning-02": "NON_COMPLIANT",
+   "general-cleaning-03": "NON_COMPLIANT",
+   "general-cleaning-04": "NON_COMPLIANT",
+   "general-cleaning-05": "NON_COMPLIANT",
+   "general-cleaning-06": "NON_COMPLIANT",
+   "nursing-station-01": "NON_COMPLIANT",
+   "nursing-station-02": "NON_COMPLIANT",
+   "nursing-station-03": "NON_COMPLIANT",
+   "nursing-station-04": "NON_COMPLIANT",
+   "nursing-station-05": "NON_COMPLIANT",
+   "nursing-station-06": "NON_COMPLIANT",
+   "nursing-station-07": "NON_COMPLIANT",
+   "nursing-station-08": "NON_COMPLIANT",
+   "nursing-station-09": "NON_COMPLIANT",
+   "ward-kitchen-01": "NON_COMPLIANT"
+  },
+  "expected": {
+   "status": "NOT_YET_COMPLIANT",
+   "earnedHalf": 544,
+   "possibleHalf": 640,
+   "criticalFailures": 0,
+   "triggers": [],
+   "flags": []
+  }
+ },
+ {
+  "name": "exactly 85.0%: 2 N/A + 48 Minor non-compliant [WPC_V2_PROPOSED]",
+  "ruleSet": "WPC_V2_PROPOSED",
+  "default": "COMPLIANT",
+  "overrides": {
+   "chemicals-chemical-storage-05": "NA",
+   "chemicals-chemical-storage-06": "NA",
+   "reception-01": "NON_COMPLIANT",
+   "reception-02": "NON_COMPLIANT",
+   "reception-03": "NON_COMPLIANT",
+   "reception-04": "NON_COMPLIANT",
+   "reception-05": "NON_COMPLIANT",
+   "reception-06": "NON_COMPLIANT",
+   "reception-07": "NON_COMPLIANT",
+   "reception-08": "NON_COMPLIANT",
+   "reception-09": "NON_COMPLIANT",
+   "reception-10": "NON_COMPLIANT",
+   "reception-11": "NON_COMPLIANT",
+   "reception-12": "NON_COMPLIANT",
+   "reception-13": "NON_COMPLIANT",
+   "reception-14": "NON_COMPLIANT",
+   "reception-15": "NON_COMPLIANT",
+   "reception-16": "NON_COMPLIANT",
+   "public-toilets-01": "NON_COMPLIANT",
+   "public-toilets-02": "NON_COMPLIANT",
+   "public-toilets-03": "NON_COMPLIANT",
+   "public-toilets-04": "NON_COMPLIANT",
+   "public-toilets-05": "NON_COMPLIANT",
+   "urinals-01": "NON_COMPLIANT",
+   "urinals-02": "NON_COMPLIANT",
+   "urinals-03": "NON_COMPLIANT",
+   "urinals-04": "NON_COMPLIANT",
+   "urinals-05": "NON_COMPLIANT",
+   "urinals-06": "NON_COMPLIANT",
+   "basins-01": "NON_COMPLIANT",
+   "basins-02": "NON_COMPLIANT",
+   "basins-03": "NON_COMPLIANT",
+   "basins-04": "NON_COMPLIANT",
+   "basins-05": "NON_COMPLIANT",
+   "general-cleaning-01": "NON_COMPLIANT",
+   "general-cleaning-02": "NON_COMPLIANT",
+   "general-cleaning-03": "NON_COMPLIANT",
+   "general-cleaning-04": "NON_COMPLIANT",
+   "general-cleaning-05": "NON_COMPLIANT",
+   "general-cleaning-06": "NON_COMPLIANT",
+   "nursing-station-01": "NON_COMPLIANT",
+   "nursing-station-02": "NON_COMPLIANT",
+   "nursing-station-03": "NON_COMPLIANT",
+   "nursing-station-04": "NON_COMPLIANT",
+   "nursing-station-05": "NON_COMPLIANT",
+   "nursing-station-06": "NON_COMPLIANT",
+   "nursing-station-07": "NON_COMPLIANT",
+   "nursing-station-08": "NON_COMPLIANT",
+   "nursing-station-09": "NON_COMPLIANT",
+   "ward-kitchen-01": "NON_COMPLIANT"
+  },
+  "expected": {
+   "status": "NOT_YET_COMPLIANT",
+   "earnedHalf": 544,
+   "possibleHalf": 640,
+   "criticalFailures": 0,
+   "triggers": [],
+   "flags": []
+  }
+ }
+]
