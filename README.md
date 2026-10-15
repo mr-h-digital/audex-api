@@ -1,73 +1,163 @@
-# audex-api
+![AudEx logo](brand/exports/logo/audex-lockup.png)
 
-The AudEx server: Spring Boot 3.5 / Java 21 / Maven, Flyway + Postgres, deployed on Railway. The web app is the separate **audex-web** repository.
-Keep this repository **private**.
+# AudEx API
 
-```
-src/main/java/.../scoring   ScoringEngine (integer half-point maths) + rule sets + checklist catalogue
-src/main/java/.../auth      accounts, sign-in, recovery, password reset, bearer-token interceptor
-src/main/java/.../api       audit sync, photo upload, scoring endpoint, CORS
-src/main/java/.../storage   photo storage (S3-compatible Railway bucket)
-src/main/resources/db/migration   V1 schema, V2 training sessions, V3 supervisor, V4 accounts
-shared/    template.json, rulesets.json, scoring-fixtures.json  <- COPY, see below
-tools/     javac harnesses (run without Maven), export_fixtures_flat.py, generate_seed.py (rebuilds shared/ from the WPC workbook)
-```
+A Spring Boot service for the AudEx housekeeping audit app, built with Java 21 and Maven. It stores accounts and synced audits in PostgreSQL, applies the shared scoring rules, and can store audit photos in an S3-compatible bucket. The mobile-first web app is maintained separately in **`audex-web`**.
 
-## Run
-```
+**Sync audits safely** · **Score consistently** · **Manage accounts and photos**
+
+---
+
+## At a glance
+
+The API receives finalized audits from the web app, validates their answers and rule set, and calculates each score on the server. Client-generated IDs make audit and photo uploads safe to retry after a dropped connection. Account and recovery endpoints support sign-in, while optional object storage handles audit photos.
+
+> **Project status:** scoring and authentication have plain-Java harnesses. The Spring controllers, database migrations and photo-storage integration still need end-to-end validation against the target services before production use.
+
+## Contents
+
+- [Get started](#get-started)
+- [What the API does](#what-the-api-does)
+- [Project layout](#project-layout)
+- [Scoring and shared data](#scoring-and-shared-data)
+- [API endpoints](#api-endpoints)
+- [Accounts and security](#accounts-and-security)
+- [Deploy to Railway](#deploy-to-railway)
+- [Current limitations](#current-limitations)
+
+## Get started
+
+### Requirements
+
+- Java 21
+- Maven
+- PostgreSQL for running the service locally
+
+### Run locally
+
+Start PostgreSQL, then run the tests and service:
+
+```bash
 mvn test
-mvn spring-boot:run        # needs Postgres: DATABASE_URL / PGUSER / PGPASSWORD
+mvn spring-boot:run
 ```
 
-## The shared/ folder is a copy
-`audex-web` has the identical `shared/` folder. When the checklist or scoring rules change, change **both** copies. Both repositories test the
-same `scoring-fixtures.json`, so a copy that drifts makes tests fail.
-Rebuild from the workbook: `python3 tools/generate_seed.py <WPC_Health_Care_Housekeeping_Audit_Aligned.xlsx> shared`
+By default, the service connects to `jdbc:postgresql://localhost:5432/audex` with username and password `audex`, and listens on port `8080`. Override these values with environment variables:
 
-## Deploy on Railway
-Create a service from this repository (Railway detects Maven). Variables:
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `DATABASE_URL` | `jdbc:postgresql://localhost:5432/audex` | JDBC URL for PostgreSQL |
+| `PGUSER` | `audex` | Database username |
+| `PGPASSWORD` | `audex` | Database password |
+| `PORT` | `8080` | HTTP port |
+| `AUDEX_APP_URL` | `http://localhost:5173` | Web app origin used in account emails |
+| `AUDEX_ALLOWED_ORIGINS` | `http://localhost:5173` | Browser origin allowed to call the API |
+
+Flyway applies the SQL migrations at startup. Keep real credentials in environment configuration; never commit them or a `.env` file.
+
+## What the API does
+
+- **Audit sync:** validate finalized audits and save them using client-generated IDs, so retries update rather than duplicate records.
+- **Server-side scoring:** calculate status and percentage from the submitted answers and versioned rule set instead of trusting a client-calculated score.
+- **Account management:** support initial account setup, sign-in, profile updates, password changes, sign-out and account recovery.
+- **Photo storage:** optionally save JPEG, PNG or WebP audit photos in an S3-compatible bucket after the audit has synced.
+- **Database migrations:** use Flyway to manage PostgreSQL schema changes.
+
+## Project layout
+
+| Path | Purpose |
+| --- | --- |
+| `src/main/java/.../scoring/` | Scoring engine, score results, rule sets and checklist catalogue |
+| `src/main/java/.../auth/` | Accounts, sessions, password and email recovery, mail and authentication |
+| `src/main/java/.../api/` | Audit sync, photo upload and CORS configuration |
+| `src/main/java/.../storage/` | Optional S3-compatible photo storage |
+| `src/main/resources/db/migration/` | Flyway schema migrations |
+| `src/main/resources/application.yml` | Local defaults and environment-based configuration |
+| `shared/` | Checklist template, rule sets and scoring fixtures shared with `audex-web` |
+| `tools/` | Plain-Java test harnesses and shared-data generation utilities |
+| `brand/exports/` | Exported AudEx brand assets |
+
+## Scoring and shared data
+
+| Rule set | Status | Summary |
+| --- | --- | --- |
+| `WPC_V1` | Active default | WPC thresholds (95% / 85%) with a Critical Non-Compliant override |
+| `WPC_V2_PROPOSED` | Proposed | Adds review caps for Critical Partial, 3+ Major failures, a high-risk section below 85%, and N/A above 10% |
+
+The API and `audex-web` contain copies of the same `shared/` directory. When the checklist, scoring rules or fixtures change, update both copies. Both repositories should test against the same `scoring-fixtures.json` so drift is caught.
+
+To rebuild the shared data from the WPC workbook:
+
+```bash
+python3 tools/generate_seed.py <WPC_Health_Care_Housekeeping_Audit_Aligned.xlsx> shared
+```
+
+Scores use integer tenths of a percent and half-point increments so Java and TypeScript compare results consistently. Each audit retains the rule set it was scored under.
+
+## API endpoints
+
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| `GET` | `/api/auth/status` | Check whether first-account setup is required |
+| `POST` | `/api/auth/setup` | Create the first account |
+| `POST` | `/api/auth/login` | Sign in |
+| `POST` | `/api/auth/logout` | Sign out the current session |
+| `POST` | `/api/auth/logout-all` | Sign out all sessions |
+| `POST` | `/api/auth/forgot-username` | Request username recovery by email |
+| `POST` | `/api/auth/forgot-password` | Request a password-reset email |
+| `POST` | `/api/auth/reset-password` | Set a new password using a reset token |
+| `GET`, `PATCH` | `/api/me` | Read or update the signed-in user's profile |
+| `POST` | `/api/me/password` | Change the signed-in user's password |
+| `PUT` | `/api/audits/{id}` | Validate, score and sync a finalized audit |
+| `PUT` | `/api/audits/{auditId}/photos/{photoId}` | Upload a photo after its audit has synced |
+| `GET` | `/api/photos/{photoId}` | Retrieve an uploaded photo |
+
+Protected endpoints use a bearer token in the `Authorization` header. Audit uploads require a reason for every `N/A` response; the server validates checklist items and recalculates the score. Photos are limited to 10 MB and must be JPEG, PNG or WebP. Photo endpoints return an error if bucket storage is not configured.
+
+## Accounts and security
+
+- Passwords are hashed with BCrypt (cost 12). The policy allows 10–128 characters and rejects common passwords, repeated characters, and passwords containing the username or email name.
+- Session tokens contain 256 bits of randomness; only a SHA-256 hash is stored. Sessions expire after 30 days of inactivity or 90 days maximum.
+- Password-reset tokens are single-use, expire after 30 minutes, and are stored as hashes. A new reset request invalidates older tokens; a successful reset signs out all sessions and sends a notice.
+- Rate limits cover sign-in attempts, recovery requests and password confirmations. They are held in memory and are suitable for one server instance; move them to shared storage before running multiple instances.
+- Username and password recovery use the same response whether or not the account exists.
+
+## Deploy to Railway
+
+Create a Railway service from this repository; Railway detects the Maven project. Configure the following variables on the server:
 
 | Variable | Purpose |
-|---|---|
-| `DATABASE_URL`, `PGUSER`, `PGPASSWORD` | Postgres (use Railway's Postgres plugin values; `DATABASE_URL` must be a `jdbc:postgresql://...` URL) |
-| `AUDEX_SETUP_CODE` | Needed once to create the first account. Remove it afterwards. |
-| `AUDEX_APP_URL` | Address of the web app, used in reset links, e.g. `https://audex.mrhdigital.co.za` (no trailing slash) |
-| `AUDEX_ALLOWED_ORIGINS` | Same address, so the browser may call the API |
-| `SPRING_MAIL_HOST`, `SPRING_MAIL_PORT`, `SPRING_MAIL_USERNAME`, `SPRING_MAIL_PASSWORD` | Outgoing email (SMTP). Without them emails are only written to the log, so username recovery and password reset will not reach anyone. |
-| `AUDEX_MAIL_FROM` | The "from" address |
-| `BUCKET`, `ENDPOINT`, `REGION`, `ACCESS_KEY_ID`, `SECRET_ACCESS_KEY` | Railway storage bucket for photos (leave `BUCKET` unset to run without photo storage) |
+| --- | --- |
+| `DATABASE_URL`, `PGUSER`, `PGPASSWORD` | PostgreSQL connection; `DATABASE_URL` must use a `jdbc:postgresql://...` URL |
+| `AUDEX_SETUP_CODE` | One-time code for creating the first account; remove it after setup |
+| `AUDEX_APP_URL` | Public web app origin used in password-reset links, e.g. `https://audex.mrhdigital.co.za` |
+| `AUDEX_ALLOWED_ORIGINS` | Web app origin allowed to call the API |
+| `SPRING_MAIL_HOST`, `SPRING_MAIL_PORT`, `SPRING_MAIL_USERNAME`, `SPRING_MAIL_PASSWORD` | SMTP settings for account recovery emails |
+| `AUDEX_MAIL_FROM` | Sender address for account emails |
+| `BUCKET`, `ENDPOINT`, `REGION`, `ACCESS_KEY_ID`, `SECRET_ACCESS_KEY` | S3-compatible object storage for audit photos |
 
-Never commit a `.env` file or any key.
+Without SMTP configuration, account recovery emails are only written to the application log. Leave `BUCKET` unset to run without photo storage. Do not commit server credentials or put them in the frontend repository.
 
-## Rule sets
-| Code | Status | What it does |
-| --- | --- | --- |
-| `WPC_V1` | **Active (default)** | The current WPC sheet: 95% / 85% thresholds, Critical Non-Compliant override |
-| `WPC_V2_PROPOSED` | Pending approval | V1 plus four caps: Critical Partial, 3+ Major failures, high-risk section under 85%, N/A over 10% flags review |
+## Current limitations
 
-Every audit stores the rule set it was scored under. Thresholds are integer tenths of a percent and points are half-points, so Java and TypeScript agree exactly.
-The server re-scores every audit it receives and never trusts the phone's figure.
+- The rate limiter is in-memory and is not shared across multiple server instances.
+- The web app does not yet sync sites or training sessions to the API, or pull server data onto a second device.
+- The web app dashboard currently uses labelled demo data until it is connected to server-backed audit data.
+- Run `mvn test` and validate account setup, sign-in, audit upload, migrations and photo storage against a real PostgreSQL database and bucket before production use.
 
-## API
-- `PUT /api/audits/{id}`: idempotent audit sync (client-made id), requires a reason for every N/A, auditor taken from the signed-in account
-- `PUT /api/audits/{id}/photos/{photoId}`: photo upload (after its audit has synced)
-- `POST /api/auth/setup | login | logout | logout-all | forgot-username | forgot-password | reset-password`, `GET /api/auth/status`
-- `GET/PATCH /api/me`, `POST /api/me/password`
-- Everything under `/api` except `/api/auth/**` needs `Authorization: Bearer <token>`
+The plain-Java harnesses can be run without Maven from Bash:
 
-## Sign-in design
-- Passwords: BCrypt (cost 12), 10 to 128 characters, no composition rules, rejects common passwords, repeated characters, and passwords containing the username or email name.
-- Tokens: random 256-bit, only a SHA-256 hash is stored. Sessions last 30 days of use, 90 days at most. Reset tokens work once and last 30 minutes; a new request cancels older ones; a reset signs out every device and emails a notice.
-- Unknown usernames take the same time as wrong passwords. Limits: 5 failures per 15 min per username, 30 per 15 min per address, 3 recovery requests per hour, 5 password confirmations per 15 min. (Held in memory: fine for one server instance; move to the database before running several.)
-- Forgot-username and forgot-password answer identically whether or not the account exists.
-
-## Testing status
-The Java scoring engine passes `tools/JavacHarness.java` and the auth rules pass `tools/AuthHarness.java` (both run with plain `javac`):
-```
+```sh
 D=src/main/java/za/co/mrhdigital/audex
-javac -d /tmp/ah tools/AuthHarness.java $D/auth/{PasswordPolicy,Tokens,AttemptLimiter,Identity}.java && java -cp /tmp/ah AuthHarness
+javac -d /tmp/ah tools/AuthHarness.java $D/auth/{PasswordPolicy,Tokens,AttemptLimiter,Identity}.java
+java -cp /tmp/ah AuthHarness
 python3 tools/export_fixtures_flat.py shared /tmp/fx.flat
-javac -d /tmp/jh tools/JavacHarness.java $D/scoring/{Result,RuleSet,ScoreResult,ScoredItem,ScoringEngine,Severity,Status}.java && java -cp /tmp/jh JavacHarness /tmp/fx.flat
+javac -d /tmp/jh tools/JavacHarness.java $D/scoring/{Result,RuleSet,ScoreResult,ScoredItem,ScoringEngine,Severity,Status}.java
+java -cp /tmp/jh JavacHarness /tmp/fx.flat
 ```
-The Spring controllers, SQL migrations and photo storage have **not been run** (Maven Central was unreachable where they were written). Run `mvn test`, then do one real
-setup + sign-in + audit upload against a Postgres database before relying on this.
+
+---
+
+### Developed by Mr. H Digital
+
+![Mr. H Digital — Digital Solutions for Growing Businesses](brand/exports/logo/mrh-digital-logo-transparent.png)
