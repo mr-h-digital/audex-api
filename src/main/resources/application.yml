@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5432}/${PGDATABASE:${POSTGRES_DB:audex}}}
+    url: ${JDBC_DATABASE_URL:jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5432}/${PGDATABASE:${POSTGRES_DB:audex}}}
     username: ${PGUSER:${POSTGRES_USER:audex}}
     password: ${PGPASSWORD:${POSTGRES_PASSWORD:audex}}
   flyway:

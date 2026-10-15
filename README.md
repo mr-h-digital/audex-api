@@ -42,7 +42,7 @@ mvn test
 mvn spring-boot:run
 ```
 
-By default, the service connects to `jdbc:postgresql://localhost:5432/audex` with username and password `audex`, and listens on port `8080`. Railway's Postgres variables are used directly to construct the JDBC connection; `DATABASE_URL` can still override it when supplied:
+By default, the service connects to `jdbc:postgresql://localhost:5432/audex` with username and password `audex`, and listens on port `8080`. Railway's Postgres variables are used directly to construct the JDBC connection. `JDBC_DATABASE_URL` can override the generated JDBC URL; the Railway-provided `DATABASE_URL` is not used because it may be a `postgres://` URL, which Hikari cannot use as a JDBC URL:
 
 | Variable | Purpose |
 | --- | --- |
@@ -51,7 +51,7 @@ By default, the service connects to `jdbc:postgresql://localhost:5432/audex` wit
 | `PGUSER` or `POSTGRES_USER` | Database username (`PGUSER` takes precedence) |
 | `PGPASSWORD` or `POSTGRES_PASSWORD` | Database password (`PGPASSWORD` takes precedence) |
 | `PGDATA` | PostgreSQL server's data directory; not used by this API client |
-| `DATABASE_URL` | Optional full JDBC URL override |
+| `JDBC_DATABASE_URL` | Optional full `jdbc:postgresql://...` connection URL override |
 | `PORT` | HTTP port (default `8080`) |
 | `AUDEX_APP_URL` | Web app origin used in account emails |
 | `AUDEX_ALLOWED_ORIGINS` | Browser origin allowed to call the API |
@@ -133,7 +133,7 @@ Create a Railway service from this repository; Railway detects the Maven project
 | --- | --- |
 | `PGHOST`, `PGPORT`, `PGDATABASE`, `PGUSER`, `PGPASSWORD` | Railway PostgreSQL connection values; the API builds its JDBC URL from these |
 | `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD` | Alternate database name, username and password variables used if the corresponding `PG*` variable is unset |
-| `DATABASE_URL` | Optional full JDBC URL override |
+| `JDBC_DATABASE_URL` | Optional full `jdbc:postgresql://...` connection URL override; do not set this to Railway's `postgres://` `DATABASE_URL` |
 | `AUDEX_SETUP_CODE` | One-time code for creating the first account; remove it after setup |
 | `AUDEX_APP_URL` | Public web app origin used in password-reset links, e.g. `https://audex.mrhdigital.co.za` |
 | `AUDEX_ALLOWED_ORIGINS` | Web app origin allowed to call the API |
