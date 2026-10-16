@@ -16,7 +16,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 /**
  * Sign-in, sign-out, account recovery and password changes.
- *
  * Rules that matter:
  * - Wrong username and wrong password give the same message, and take about the same time.
  * - "Forgot username" and "forgot password" always answer the same way, so nobody can use them to find out who has an account.
@@ -25,7 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
  */
 @Service
 public class AuthService {
-    public record Me(UUID id, String username, String displayName, String email, String phone) {}
+    public record Me(UUID id, String username, String displayName, String email, String phone, String jobTitle) {}
     public record Session(String token, Instant expiresAt, Me user) {}
 
     static final Duration SESSION_IDLE = Duration.ofDays(30);
@@ -58,11 +57,11 @@ public class AuthService {
 
     /** Creates the first account. Only possible while no account exists, and only with the setup code held by the owner. */
     @Transactional
-    public Session setup(String code, String username, String email, String displayName, String password, String device) {
+    public Session setup(String code, String username, String email, String displayName, String phone, String jobTitle, String password, String device) {
         if (!setupRequired()) throw err(HttpStatus.CONFLICT, "This app has already been set up.");
         if (setupCode.isBlank()) throw err(HttpStatus.SERVICE_UNAVAILABLE, "Setup is switched off on this server.");
         if (!Tokens.constantTimeEquals(setupCode, code == null ? "" : code.trim())) throw err(HttpStatus.FORBIDDEN, "That setup code is not right.");
-        UUID id = createUser(username, email, displayName, password);
+        UUID id = createUser(username, email, displayName, phone, jobTitle, password);
         return openSession(id, device);
     }
 
@@ -75,7 +74,7 @@ public class AuthService {
         List<Row> rows = jdbc.query("SELECT id, password_hash, disabled FROM app_user WHERE lower(username) = ?",
                 (rs, i) -> new Row(rs.getObject("id", UUID.class), rs.getString("password_hash"), rs.getBoolean("disabled")),
                 Identity.normaliseUsername(username));
-        Row u = rows.isEmpty() ? null : rows.get(0);
+        Row u = rows.isEmpty() ? null : rows.getFirst();
         boolean ok = encoder.matches(password == null ? "" : password, u == null ? dummyHash : u.hash) && u != null && !u.disabled;
         if (!ok) {
             loginLimiter.recordFailure(uKey); ipLimiter.recordFailure(ipKey);
@@ -115,12 +114,12 @@ public class AuthService {
     // ------------------------------------------------------------------ profile
 
     public Me me(UUID userId) {
-        return jdbc.queryForObject("SELECT id, username, display_name, email, phone FROM app_user WHERE id = ?", this::toMe, userId);
+        return jdbc.queryForObject("SELECT id, username, display_name, email, phone, job_title FROM app_user WHERE id = ?", this::toMe, userId);
     }
 
-    /** Name and phone can change freely; changing the email address needs the current password. */
+    /** Name, phone and job title can change freely; changing the email address needs the current password. */
     @Transactional
-    public Me updateMe(UUID userId, String displayName, String email, String phone, String currentPassword) {
+    public Me updateMe(UUID userId, String displayName, String email, String phone, String jobTitle, String currentPassword) {
         Me now = me(userId);
         if (displayName == null || displayName.isBlank()) throw err(HttpStatus.BAD_REQUEST, "Please enter your name.");
         String newEmail = Identity.normaliseEmail(email);
@@ -129,8 +128,9 @@ public class AuthService {
             requirePassword(userId, currentPassword);
             if (emailTaken(newEmail, userId)) throw err(HttpStatus.CONFLICT, "That email address is already used by another account.");
         }
-        jdbc.update("UPDATE app_user SET display_name = ?, email = ?, phone = ?, updated_at = now() WHERE id = ?",
-                displayName.trim(), newEmail, phone == null || phone.isBlank() ? null : phone.trim(), userId);
+        String updatedJobTitle = jobTitle == null ? now.jobTitle() : jobTitle.isBlank() ? null : jobTitle.trim();
+        jdbc.update("UPDATE app_user SET display_name = ?, email = ?, phone = ?, job_title = ?, updated_at = now() WHERE id = ?",
+                displayName.trim(), newEmail, phone == null || phone.isBlank() ? null : phone.trim(), updatedJobTitle, userId);
         return me(userId);
     }
 
@@ -152,7 +152,7 @@ public class AuthService {
         String e = Identity.normaliseEmail(email);
         if (recoveryLimiter.minutesBlocked("fu:" + e) > 0) return;
         recoveryLimiter.recordFailure("fu:" + e);
-        List<Me> users = jdbc.query("SELECT id, username, display_name, email, phone FROM app_user WHERE lower(email) = ? AND NOT disabled", this::toMe, e);
+        List<Me> users = jdbc.query("SELECT id, username, display_name, email, phone, job_title FROM app_user WHERE lower(email) = ? AND NOT disabled", this::toMe, e);
         for (Me u : users) {
             mail.send(u.email(), "Your AudEx username",
                     "Hello " + u.displayName() + ",\n\nYour AudEx username is: " + u.username() + "\n\n"
@@ -165,9 +165,9 @@ public class AuthService {
         String id = identifier == null ? "" : identifier.trim().toLowerCase();
         if (recoveryLimiter.minutesBlocked("fp:" + id) > 0) return;
         recoveryLimiter.recordFailure("fp:" + id);
-        List<Me> users = jdbc.query("SELECT id, username, display_name, email, phone FROM app_user WHERE (lower(username) = ? OR lower(email) = ?) AND NOT disabled", this::toMe, id, id);
+        List<Me> users = jdbc.query("SELECT id, username, display_name, email, phone, job_title FROM app_user WHERE (lower(username) = ? OR lower(email) = ?) AND NOT disabled", this::toMe, id, id);
         if (users.isEmpty()) return;
-        Me u = users.get(0);
+        Me u = users.getFirst();
         jdbc.update("UPDATE password_reset_token SET used_at = now() WHERE user_id = ? AND used_at IS NULL", u.id());
         String token = Tokens.create();
         jdbc.update("INSERT INTO password_reset_token (id, user_id, token_hash, expires_at) VALUES (?, ?, ?, ?)",
@@ -187,7 +187,7 @@ public class AuthService {
                 """, (rs, i) -> new ResetRow(rs.getObject("uid", UUID.class), rs.getString("username"), rs.getString("email"), rs.getString("display_name")),
                 Tokens.hash(token == null ? "" : token));
         if (rows.isEmpty()) throw err(HttpStatus.BAD_REQUEST, expired);
-        ResetRow r = rows.get(0);
+        ResetRow r = rows.getFirst();
         PasswordPolicy.problem(newPassword, r.username(), r.email()).ifPresent(p -> { throw err(HttpStatus.BAD_REQUEST, p); });
         jdbc.update("UPDATE app_user SET password_hash = ?, password_changed_at = now(), updated_at = now() WHERE id = ?", encoder.encode(newPassword), r.id());
         jdbc.update("UPDATE password_reset_token SET used_at = now() WHERE user_id = ? AND used_at IS NULL", r.id());
@@ -203,14 +203,16 @@ public class AuthService {
     private record Row(UUID id, String hash, boolean disabled) {}
     private record ResetRow(UUID id, String username, String email, String displayName) {}
 
-    private UUID createUser(String username, String email, String displayName, String password) {
+    private UUID createUser(String username, String email, String displayName, String phone, String jobTitle, String password) {
         Identity.usernameProblem(username).ifPresent(m -> { throw err(HttpStatus.BAD_REQUEST, m); });
         Identity.emailProblem(email).ifPresent(m -> { throw err(HttpStatus.BAD_REQUEST, m); });
         if (displayName == null || displayName.isBlank()) throw err(HttpStatus.BAD_REQUEST, "Please enter your name.");
         PasswordPolicy.problem(password, username, email).ifPresent(m -> { throw err(HttpStatus.BAD_REQUEST, m); });
         UUID id = UUID.randomUUID();
-        jdbc.update("INSERT INTO app_user (id, username, email, display_name, password_hash, password_changed_at) VALUES (?, ?, ?, ?, ?, now())",
-                id, username.trim(), Identity.normaliseEmail(email), displayName.trim(), encoder.encode(password));
+        jdbc.update("INSERT INTO app_user (id, username, email, display_name, phone, job_title, password_hash, password_changed_at) VALUES (?, ?, ?, ?, ?, ?, ?, now())",
+                id, username.trim(), Identity.normaliseEmail(email), displayName.trim(),
+                phone == null || phone.isBlank() ? null : phone.trim(),
+                jobTitle == null || jobTitle.isBlank() ? null : jobTitle.trim(), encoder.encode(password));
         return id;
     }
 
@@ -240,7 +242,8 @@ public class AuthService {
     }
 
     private Me toMe(java.sql.ResultSet rs, int i) throws java.sql.SQLException {
-        return new Me(rs.getObject("id", UUID.class), rs.getString("username"), rs.getString("display_name"), rs.getString("email"), rs.getString("phone"));
+        return new Me(rs.getObject("id", UUID.class), rs.getString("username"), rs.getString("display_name"),
+                rs.getString("email"), rs.getString("phone"), rs.getString("job_title"));
     }
 
     private static ResponseStatusException err(HttpStatus s, String m) { return new ResponseStatusException(s, m); }

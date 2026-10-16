@@ -15,7 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    public record SetupBody(String code, String username, String email, String displayName, String password) {}
+    public record SetupBody(String code, String username, String email, String displayName, String phone, String jobTitle, String password) {}
     public record LoginBody(String username, String password) {}
     public record EmailBody(String email) {}
     public record IdentifierBody(String identifier) {}
@@ -34,7 +34,7 @@ public class AuthController {
 
     @PostMapping("/setup")
     public AuthService.Session setup(@RequestBody SetupBody b, HttpServletRequest req) {
-        return auth.setup(b.code(), b.username(), b.email(), b.displayName(), b.password(), req.getHeader("User-Agent"));
+        return auth.setup(b.code(), b.username(), b.email(), b.displayName(), b.phone(), b.jobTitle(), b.password(), req.getHeader("User-Agent"));
     }
 
     @PostMapping("/login")

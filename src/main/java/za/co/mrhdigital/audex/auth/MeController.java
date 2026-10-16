@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/me")
 public class MeController {
-    public record ProfileBody(String displayName, String email, String phone, String currentPassword) {}
+    public record ProfileBody(String displayName, String email, String phone, String jobTitle, String currentPassword) {}
     public record PasswordBody(String currentPassword, String newPassword) {}
 
     private final AuthService auth;
@@ -25,7 +25,7 @@ public class MeController {
 
     @PatchMapping
     public AuthService.Me update(@RequestAttribute(AuthInterceptor.ATTRIBUTE) AuthUser user, @RequestBody ProfileBody b) {
-        return auth.updateMe(user.id(), b.displayName(), b.email(), b.phone(), b.currentPassword());
+        return auth.updateMe(user.id(), b.displayName(), b.email(), b.phone(), b.jobTitle(), b.currentPassword());
     }
 
     @PostMapping("/password")

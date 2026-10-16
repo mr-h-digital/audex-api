@@ -119,6 +119,8 @@ Protected endpoints use a bearer token in the `Authorization` header. Audit uplo
 
 ## Accounts and security
 
+The first account is created once through `POST /api/auth/setup`, while the database has no users and `AUDEX_SETUP_CODE` is configured. The request accepts `code`, `username`, `email`, `displayName`, `phone`, `jobTitle` and `password`; `phone` and `jobTitle` are optional. The job title is also returned in the profile and can be changed through `PATCH /api/me`. Setup returns a signed-in session. Keep the setup code and chosen password private, and remove `AUDEX_SETUP_CODE` from Railway after setup.
+
 - Passwords are hashed with BCrypt (cost 12). The policy allows 10–128 characters and rejects common passwords, repeated characters, and passwords containing the username or email name.
 - Session tokens contain 256 bits of randomness; only a SHA-256 hash is stored. Sessions expire after 30 days of inactivity or 90 days maximum.
 - Password-reset tokens are single-use, expire after 30 minutes, and are stored as hashes. A new reset request invalidates older tokens; a successful reset signs out all sessions and sends a notice.
