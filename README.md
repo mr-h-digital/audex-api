@@ -10,7 +10,7 @@ A Spring Boot service for the AudEx housekeeping audit app, built with Java 21 a
 
 ## At a glance
 
-The API receives finalized audits from the web app, validates their answers and rule set, and calculates each score on the server. Client-generated IDs make audit and photo uploads safe to retry after a dropped connection. Account and recovery endpoints support sign-in, while optional object storage handles audit photos.
+The API receives finalized audits from the web app, validates their answers and rule set, and calculates each score on the server. Sites and training sessions synchronise independently using revision checks. Signed-in devices can download the same account's sites, training, audit history, answers and photo metadata. Client-generated IDs make uploads safe to retry after a dropped connection. Account and recovery endpoints support sign-in, while optional object storage handles audit photos.
 
 > **Project status:** scoring and authentication have plain-Java harnesses. The Spring controllers, database migrations and photo-storage integration still need end-to-end validation against the target services before production use.
 
@@ -58,9 +58,16 @@ By default, the service connects to `jdbc:postgresql://localhost:5432/audex` wit
 
 Flyway applies the SQL migrations at startup. Keep real credentials in environment configuration; never commit them or a `.env` file.
 
+### IntelliJ SQL assistance
+
+IntelliJ's Database tools need their own schema configuration; Spring's datasource settings do not automatically configure IDE SQL resolution. Messages such as "No data sources are configured" and "Unable to resolve table" are IDE inspections, not Java compilation errors.
+
+For SQL assistance, add a local PostgreSQL data source in the Database tool window, select the migrated application schema for introspection, and map the Java sources and migration directory to it under **Settings > Languages & Frameworks > SQL Resolution Scopes**. Set the SQL dialect to PostgreSQL if it is not inferred. Alternatively, where supported, create a DDL data source from the Flyway migrations in version order for offline schema assistance. Keep connection credentials in local IDE storage, not committed project files. Integration tests create randomly named schemas; use the equivalent migrated application schema for static code assistance rather than connecting the IDE to a transient test schema.
+
 ## What the API does
 
-- **Audit sync:** validate finalized audits and save them using client-generated IDs, so retries update rather than duplicate records.
+- **Audit sync:** validate finalized audits and save them using client-generated IDs. Identical retries succeed; a different upload for a saved finalised audit returns a conflict.
+- **Cross-device data:** synchronise account-owned sites and training sessions and download finalised audits with their answers, scores and photo metadata.
 - **Server-side scoring:** calculate status and percentage from the submitted answers and versioned rule set instead of trusting a client-calculated score.
 - **Account management:** support initial account setup, sign-in, profile updates, password changes, sign-out and account recovery.
 - **Photo storage:** optionally save JPEG, PNG or WebP audit photos in an S3-compatible bucket after the audit has synced.
@@ -111,11 +118,37 @@ Scores use integer tenths of a percent and half-point increments so Java and Typ
 | `POST` | `/api/auth/reset-password` | Set a new password using a reset token |
 | `GET`, `PATCH` | `/api/me` | Read or update the signed-in user's profile |
 | `POST` | `/api/me/password` | Change the signed-in user's password |
+| `GET` | `/api/sites` | List the account's sites, including archived records |
+| `PUT` | `/api/sites/{id}` | Create/update a site with revision checking |
+| `GET` | `/api/training-sessions` | List the account's training sessions; optional `siteId` filter |
+| `PUT` | `/api/training-sessions/{id}` | Create/update a training session with revision checking |
+| `GET` | `/api/audits` | List the account's finalised audit summaries |
+| `GET` | `/api/audits/{id}` | Download a finalised audit, answers, score and photo metadata |
 | `PUT` | `/api/audits/{id}` | Validate, score and sync a finalized audit |
 | `PUT` | `/api/audits/{auditId}/photos/{photoId}` | Upload a photo after its audit has synced |
 | `GET` | `/api/photos/{photoId}` | Retrieve an uploaded photo |
 
 Protected endpoints use a bearer token in the `Authorization` header. Audit uploads require a reason for every `N/A` response; the server validates checklist items and recalculates the score. Photos are limited to 10 MB and must be JPEG, PNG or WebP. Photo endpoints return an error if bucket storage is not configured.
+
+### Synchronisation contract
+
+Data is private to the signed-in account, not shared between accounts. Requests for another account's record return `404`. Signing in on another device gives access to the same account's records; finalised audits and uploaded photos are read-only. Identical audit/photo retries are accepted without overwriting the saved data. Audit uploads can create a missing site for compatibility with older clients, but never overwrite an existing site's current details.
+
+All three list endpoints accept `offset` (default `0`) and `limit` (default `100`, maximum `200`) and return `{ "items": [...], "hasMore": false }`. Continue with `offset + items.length` while `hasMore` is true. Order is by UUID. This is full reconciliation, not a timestamp-based change feed; repeat it on sign-in, reconnect and manual sync. Fetch audit details to discover photo IDs, then fetch `/api/photos/{id}` with bearer authentication when images are needed.
+
+Site bodies use `id`, `name`, optional `address`, `facilityType`, `unitManager`, `supervisor`, `revision` and `archived`. Training bodies use `id`, `siteId`, `date` (`YYYY-MM-DD`), `topic`, optional non-negative `attendees` and `notes`, `revision` and `archived`. Both return the full saved record with `updatedAt`; omitted optional fields are returned as `null`.
+
+Create with `revision: 0`; subsequent writes must use the last server revision. An identical retry at the immediately previous revision is also accepted, so a lost response does not turn a successful save into a conflict. A stale, different update returns `409`: preserve the pending local edit, retrieve the server copy and let the user resolve it. Persist the exact outbound snapshot before sending and retry it before sending newer local edits. Do not mark newer edits as synced when acknowledging an older request.
+
+Archive sites/training with `archived: true` and the current revision; tombstones remain in list responses so another device cannot resurrect a deletion. Referenced sites are retained. Audit `siteName`, manager and supervisor are historical snapshots, independent of later changes to the site. Clients should upload sites first, training and finalised audits next, and photos after the audit, and must never merge downloads over pending local changes.
+
+Audit uploads also accept optional `auditorRole`, retained in audit detail for report attribution. The signed-in account supplies the auditor's name on first upload. Photo uploads accept an optional ISO-8601 `takenAt` query parameter, preserved in photo metadata; older clients that omit it use the upload time.
+
+### Existing data and ownership
+
+Migration V6 infers a site's owner only when its existing audits identify exactly one distinct non-null `created_by`; existing training inherits that site's owner. It does **not** assign unauthenticated audits, orphan sites or ambiguous multi-account sites to whoever signs in next. These records stay in the database but are not automatically exposed or claimable through sync.
+
+Before rollout, back up PostgreSQL and inspect `site WHERE owner_id IS NULL`, `training_session WHERE owner_id IS NULL`, and `audit WHERE created_by IS NULL`. An administrator must verify the intended account and explicitly assign legacy records, splitting genuinely shared sites and updating references where necessary. Do not blanket-assign all legacy records if more than one account has used the server. Old audit site names can only be backfilled from the site's current name; earlier names were not previously stored.
 
 ## Accounts and security
 
@@ -148,9 +181,20 @@ Railway's `RAILWAY_BUCKET_NAME` is a display name and `RAILWAY_BUCKET_ID` is an 
 ## Current limitations
 
 - The rate limiter is in-memory and is not shared across multiple server instances.
-- The web app does not yet sync sites or training sessions to the API, or pull server data onto a second device.
-- The web app dashboard currently uses labelled demo data until it is connected to server-backed audit data.
+- Sync is account-scoped; shared workspaces and cross-device draft editing are not supported.
+- List downloads use full paginated reconciliation; there is no incremental change feed or real-time collaboration.
 - Run `mvn test` and validate account setup, sign-in, audit upload, migrations and photo storage against a real PostgreSQL database and bucket before production use.
+
+The PostgreSQL sync integration suite is opt-in and creates and removes its own randomly named schema (the database user needs schema-creation permission). It exercises migrations, account isolation, revisions, retry safety, archive propagation, audit recovery and photo discovery using an in-memory photo store. From PowerShell, against a **test** database:
+
+```powershell
+$env:AUDEX_TEST_DATABASE_URL = 'jdbc:postgresql://localhost:5432/audex_test'
+$env:AUDEX_TEST_DATABASE_USER = 'audex'
+$env:AUDEX_TEST_DATABASE_PASSWORD = '<test-database-password>'
+mvn test
+```
+
+Real S3-compatible storage still needs a deployment smoke test; the integration suite does not contact a bucket.
 
 The plain-Java harnesses can be run without Maven from Bash:
 

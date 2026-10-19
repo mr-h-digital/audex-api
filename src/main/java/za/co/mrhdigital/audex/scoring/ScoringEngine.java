@@ -8,12 +8,13 @@ import java.util.Map;
 /**
  * Pure scoring logic, no framework dependencies. A TypeScript twin (frontend/src/scoring) runs on the phone so
  * the auditor sees a live score offline; both are tested against the same shared fixtures.
- *
- * Order of decisions:
- *  1. Any unanswered applicable item                -> INCOMPLETE
- *  2. Any Critical item Non-Compliant (if enabled)  -> NON_COMPLIANT
- *  3. Percentage thresholds                         -> COMPLIANT / NOT_YET_COMPLIANT / NON_COMPLIANT
- *  4. If COMPLIANT and any cap rule triggered       -> NOT_YET_COMPLIANT (caps never lower a worse status)
+ * <p>Order of decisions:
+ * <ol>
+ * <li>Any unanswered applicable item: INCOMPLETE</li>
+ * <li>Any Critical item Non-Compliant (if enabled): NON_COMPLIANT</li>
+ * <li>Percentage thresholds: COMPLIANT / NOT_YET_COMPLIANT / NON_COMPLIANT</li>
+ * <li>If COMPLIANT and any cap rule triggered: NOT_YET_COMPLIANT (caps never lower a worse status)</li>
+ * </ol>
  */
 public final class ScoringEngine {
 
@@ -100,7 +101,7 @@ public final class ScoringEngine {
                 unanswered, naCount, List.copyOf(triggers), List.copyOf(flags), List.copyOf(sectionScores));
     }
 
-    private static double percent(int earnedHalf, int possibleHalf) {
+    public static double percent(int earnedHalf, int possibleHalf) {
         return possibleHalf == 0 ? 0.0 : Math.round(earnedHalf * 10000.0 / possibleHalf) / 100.0;
     }
 }
