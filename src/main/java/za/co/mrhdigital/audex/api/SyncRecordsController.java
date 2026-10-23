@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import za.co.mrhdigital.audex.auth.AuthInterceptor;
 import za.co.mrhdigital.audex.auth.AuthUser;
+import za.co.mrhdigital.audex.billing.EntitlementService;
 
 @RestController
 @RequestMapping("/api")
@@ -46,10 +47,12 @@ public class SyncRecordsController {
 
     private final JdbcTemplate jdbc;
     private final SyncAccess access;
+    private final EntitlementService entitlements;
 
-    public SyncRecordsController(JdbcTemplate jdbc, SyncAccess access) {
+    public SyncRecordsController(JdbcTemplate jdbc, SyncAccess access, EntitlementService entitlements) {
         this.jdbc = jdbc;
         this.access = access;
+        this.entitlements = entitlements;
     }
 
     @GetMapping("/sites")
@@ -66,6 +69,10 @@ public class SyncRecordsController {
                         @RequestAttribute(AuthInterceptor.ATTRIBUTE) AuthUser user) {
         sameId(id, p.id());
         UUID owner = SyncAccess.account(user);
+        entitlements.requireWrite(owner);
+        boolean becomingActive = !p.archived() && jdbc.queryForObject(
+                "SELECT count(*) FROM site WHERE id = ? AND owner_id = ? AND NOT archived", Integer.class, id, owner) == 0;
+        if (becomingActive) entitlements.requireSiteCapacity(owner);
         if (p.revision() == 0) {
             jdbc.update("""
                     INSERT INTO site (id, owner_id, name, address, facility_type, unit_manager, supervisor, archived)
@@ -107,6 +114,7 @@ public class SyncRecordsController {
                                 @RequestAttribute(AuthInterceptor.ATTRIBUTE) AuthUser user) {
         sameId(id, p.id());
         UUID owner = SyncAccess.account(user);
+        entitlements.requireWrite(owner);
         access.site(p.siteId(), owner, true);
         if (p.revision() == 0) {
             jdbc.update("""

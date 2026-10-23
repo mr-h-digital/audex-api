@@ -30,6 +30,7 @@ import org.springframework.web.server.ResponseStatusException;
 import za.co.mrhdigital.audex.storage.PhotoStorage;
 import za.co.mrhdigital.audex.auth.AuthInterceptor;
 import za.co.mrhdigital.audex.auth.AuthUser;
+import za.co.mrhdigital.audex.billing.EntitlementService;
 
 /**
  * Audit photos. The phone uploads each photo after its audit has synced, so the audit (and the item the photo belongs
@@ -45,11 +46,13 @@ public class PhotoController {
     private final JdbcTemplate jdbc;
     private final Optional<PhotoStorage> storage;
     private final SyncAccess access;
+    private final EntitlementService entitlements;
 
-    public PhotoController(JdbcTemplate jdbc, Optional<PhotoStorage> storage, SyncAccess access) {
+    public PhotoController(JdbcTemplate jdbc, Optional<PhotoStorage> storage, SyncAccess access, EntitlementService entitlements) {
         this.jdbc = jdbc;
         this.storage = storage;
         this.access = access;
+        this.entitlements = entitlements;
     }
 
     @PutMapping("/audits/{auditId}/photos/{photoId}")
@@ -61,6 +64,7 @@ public class PhotoController {
             @RequestHeader(value = "Content-Type", defaultValue = "image/jpeg") String contentType,
             @RequestBody byte[] bytes, @RequestAttribute(AuthInterceptor.ATTRIBUTE) AuthUser user) {
         UUID audit = uuid(auditId), photo = uuid(photoId);
+        entitlements.requireWrite(SyncAccess.account(user));
         access.audit(audit, SyncAccess.account(user));
         PhotoStorage store = storage.orElseThrow(() -> new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Photo storage is not configured"));
         String type = contentType.split(";")[0].trim().toLowerCase(Locale.ROOT);
@@ -94,10 +98,11 @@ public class PhotoController {
             return ResponseEntity.noContent().build();
         }
         String key = "audits/" + audit + "/" + photo;
+        entitlements.requireStorage(SyncAccess.account(user), bytes.length);
         store.put(key, bytes, type);
         jdbc.update("""
-                INSERT INTO audit_photo (id, audit_id, item_key, storage_key, caption, content_hash, taken_at) VALUES (?, ?, ?, ?, ?, ?, ?)
-                """, photo, audit, item, key, caption, hash, Timestamp.from(taken));
+                INSERT INTO audit_photo (id, audit_id, item_key, storage_key, caption, content_hash, taken_at, size_bytes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """, photo, audit, item, key, caption, hash, Timestamp.from(taken), bytes.length);
         return ResponseEntity.noContent().build();
     }
 

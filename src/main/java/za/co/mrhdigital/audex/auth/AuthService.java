@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +43,12 @@ public class AuthService {
     private final AttemptLimiter passwordLimiter = new AttemptLimiter(5, Duration.ofMinutes(15).toMillis(), System::currentTimeMillis);
     private final String setupCode;
     private final String appUrl;
+    @Value("${audex.billing.enabled:false}") private boolean subscriptionsEnabled;
+    @Value("${audex.auth.registration-enabled:false}") private boolean registrationEnabled;
+    private final AttemptLimiter signupLimiter = new AttemptLimiter(5, Duration.ofHours(1).toMillis(), System::currentTimeMillis);
+    private final AttemptLimiter verificationLimiter = new AttemptLimiter(5, Duration.ofHours(1).toMillis(), System::currentTimeMillis);
+
+    public boolean registrationEnabled() { return subscriptionsEnabled && registrationEnabled; }
 
     public AuthService(JdbcTemplate jdbc, MailSender mail,
                        @Value("${audex.auth.setup-code:}") String setupCode, @Value("${audex.app-url:http://localhost:5173}") String appUrl) {
@@ -66,6 +73,47 @@ public class AuthService {
     }
 
     // ------------------------------------------------------------------ sign in / out
+
+    @Transactional
+    public Session register(String username, String email, String displayName, String password, String device, String ip) {
+        if (!registrationEnabled()) throw err(HttpStatus.SERVICE_UNAVAILABLE, "Public signup is not enabled yet.");
+        if (signupLimiter.minutesBlocked(ip) > 0) throw err(HttpStatus.TOO_MANY_REQUESTS, "Too many signups. Please try again later.");
+        signupLimiter.recordFailure(ip);
+        UUID id;
+        try { id = createUser(username, email, displayName, null, null, password); }
+        catch (DuplicateKeyException e) { throw err(HttpStatus.CONFLICT, "That username or email cannot be used. Sign in or recover your existing account."); }
+        // A new trial begins only after ownership verification, never from an untrusted signup email.
+        sendVerification(id);
+        return openSession(id, device);
+    }
+
+    @Transactional
+    public void sendVerification(UUID id) {
+        if (!subscriptionsEnabled) throw err(HttpStatus.SERVICE_UNAVAILABLE, "Email verification is not enabled yet.");
+        if (verificationLimiter.minutesBlocked(id.toString()) > 0) throw err(HttpStatus.TOO_MANY_REQUESTS, "Too many verification emails. Please try again later.");
+        verificationLimiter.recordFailure(id.toString());
+        Me user = me(id);
+        jdbc.update("UPDATE email_verification SET used_at = now() WHERE user_id = ? AND used_at IS NULL", id);
+        String token = Tokens.create();
+        jdbc.update("INSERT INTO email_verification(id, user_id, email, token_hash, expires_at) VALUES (?, ?, ?, ?, ?)",
+                UUID.randomUUID(), id, user.email(), Tokens.hash(token), Timestamp.from(Instant.now().plus(Duration.ofHours(24))));
+        mail.send(user.email(), "Verify your AudEx email",
+                "Open this link within 24 hours to verify your AudEx account:\n\n" + appUrl + "/verify-email#token=" + token
+                        + "\n\nOnly continue if you requested an AudEx account. This link works once.");
+    }
+
+    @Transactional
+    public void verifyEmail(String token) {
+        var rows = jdbc.queryForList("""
+                SELECT t.user_id, t.email FROM email_verification t JOIN app_user u ON u.id = t.user_id
+                WHERE t.token_hash = ? AND t.used_at IS NULL AND t.expires_at > now()
+                AND lower(t.email) = lower(u.email) AND NOT u.disabled FOR UPDATE OF t, u
+                """, Tokens.hash(token == null ? "" : token));
+        if (rows.isEmpty()) throw err(HttpStatus.BAD_REQUEST, "This verification link is expired or already used. Request a new email from Settings.");
+        UUID id = (UUID) rows.getFirst().get("user_id");
+        jdbc.update("UPDATE app_user SET email_verified_at = now(), trial_started_at = coalesce(trial_started_at, now()) WHERE id = ?", id);
+        jdbc.update("UPDATE email_verification SET used_at = now() WHERE user_id = ? AND used_at IS NULL", id);
+    }
 
     public Session login(String username, String password, String device, String ip) {
         String uKey = "u:" + Identity.normaliseUsername(username), ipKey = "ip:" + ip;
@@ -127,6 +175,8 @@ public class AuthService {
             Identity.emailProblem(newEmail).ifPresent(m -> { throw err(HttpStatus.BAD_REQUEST, m); });
             requirePassword(userId, currentPassword);
             if (emailTaken(newEmail, userId)) throw err(HttpStatus.CONFLICT, "That email address is already used by another account.");
+            jdbc.update("UPDATE app_user SET email_verified_at = NULL WHERE id = ?", userId);
+            jdbc.update("UPDATE email_verification SET used_at = now() WHERE user_id = ? AND used_at IS NULL", userId);
         }
         String updatedJobTitle = jobTitle == null ? now.jobTitle() : jobTitle.isBlank() ? null : jobTitle.trim();
         jdbc.update("UPDATE app_user SET display_name = ?, email = ?, phone = ?, job_title = ?, updated_at = now() WHERE id = ?",

@@ -19,13 +19,19 @@ public class MailConfig {
     private static final Logger log = LoggerFactory.getLogger(MailConfig.class);
 
     @Bean
-    MailSender mailSender(Optional<JavaMailSender> smtp, @Value("${audex.mail.from:no-reply@localhost}") String from) {
+    MailSender mailSender(Optional<JavaMailSender> smtp, @Value("${audex.mail.from:no-reply@localhost}") String from,
+                          @Value("${audex.auth.registration-enabled:false}") boolean registration,
+                          @Value("${audex.app-url:http://localhost:5173}") String appUrl) {
         if (smtp.isPresent()) {
             return (to, subject, body) -> {
                 SimpleMailMessage m = new SimpleMailMessage();
                 m.setFrom(from); m.setTo(to); m.setSubject(subject); m.setText(body);
                 smtp.get().send(m);
             };
+        }
+        java.net.URI uri = java.net.URI.create(appUrl);
+        if (registration && !java.util.Set.of("localhost", "127.0.0.1", "::1").contains(uri.getHost() == null ? "" : uri.getHost())) {
+            throw new IllegalStateException("Public registration requires SMTP. Email verification links must not be delivered only to production logs.");
         }
         log.warn("No SMTP server configured (SPRING_MAIL_HOST): emails will only be written to this log.");
         return (to, subject, body) -> log.info("EMAIL to={} subject={}\n{}", to, subject, body);

@@ -22,6 +22,7 @@ The API receives finalized audits from the web app, validates their answers and 
 - [Scoring and shared data](#scoring-and-shared-data)
 - [API endpoints](#api-endpoints)
 - [Accounts and security](#accounts-and-security)
+- [Subscription rollout](#subscription-rollout)
 - [Deploy to Railway](#deploy-to-railway)
 - [Current limitations](#current-limitations)
 
@@ -129,6 +130,64 @@ Scores use integer tenths of a percent and half-point increments so Java and Typ
 | `GET` | `/api/photos/{photoId}` | Retrieve an uploaded photo |
 
 Protected endpoints use a bearer token in the `Authorization` header. Audit uploads require a reason for every `N/A` response; the server validates checklist items and recalculates the score. Photos are limited to 10 MB and must be JPEG, PNG or WebP. Photo endpoints return an error if bucket storage is not configured.
+
+## Subscription rollout
+
+Subscription enforcement, public registration and checkout are **off by default**. Deploying this source does not enable live charging or grant complimentary access. The feature adds individual plans only:
+
+| Plan | Monthly / annual charge | Active sites | Photo allowance |
+| --- | --- | --- | --- |
+| Trial | Free for 14 days, no card | 1 | 100 MB |
+| Solo | R199 / R1,990 | 3 | 1 GB |
+| Professional | R399 / R3,990 | 15 | 5 GB |
+| Approved complimentary account | No payment | Unrestricted | Unrestricted |
+
+Storage units are decimal (MB = 1,000,000 bytes). All plans include the core audit/reporting tools. Mr. H Digital is not VAT registered; the listed charges have no VAT added. No shared workspaces, prorated upgrades, instant plan changes or team billing are implemented. Cancel the existing renewal and select a new plan after the paid period ends.
+
+### Configuration and safe activation order
+
+1. Back up the database and object storage. Deploy migration V8 with flags still off. It freezes **existing account IDs** eligible for the trainer and administrator slots; later signups and email changes are never candidates. Confirm the actual two accounts exist in `complimentary_candidate`. If either is missing, stop and resolve the existing-account identity with the owner; do not create an email-based bypass.
+2. Generate a P-256 signing pair in a secure local environment. For example, Node's `crypto.generateKeyPairSync('ec', { namedCurve: 'prime256v1' })`; export the private key as base64 DER `pkcs8`, public key as base64 DER `spki`. Store the private key only in server secret configuration. Keep the pair stable across redeploys; rotation requires a coordinated web rebuild and renewed leases.
+3. Configure real SMTP (`SPRING_MAIL_HOST`, port, username/password, TLS and `AUDEX_MAIL_FROM`), `AUDEX_APP_URL=https://audex.mrhdigital.co.za`, permitted CORS origins, `AUDEX_ENTITLEMENT_PRIVATE_KEY`, and `AUDEX_ENTITLEMENT_PUBLIC_KEY`. Rebuild the web app with its matching pinned public key and production API URL as documented in `audex-web`.
+4. Set `AUDEX_BILLING_ENABLED=true`, leaving checkout and public signup off. This starts a **one-time** 14-day rollout trial for all existing accounts. New signup trials start only after email verification. Existing accounts also need to verify their email before new writes. Verify delivery and links using Settings; do not use development log emails in production.
+5. Have both existing candidate account owners complete their email verification. Independently confirm immutable UUIDs from the deployed database. Set `AUDEX_BOOTSTRAP_ADMIN_ID` to the verified, pre-rollout administrator UUID and restart once. Startup refuses any non-candidate, unverified, disabled or mismatched account. Remove the bootstrap variable after the audited grant is recorded. The administrator can grant the verified trainer UUID through Settings or `POST /api/billing/admin/grants` (`userId`, ownership-verification `reason`). The trainer receives full product access, **not** administrator privileges. Grants bind permanently to account IDs, not current email strings; both operations are logged in `billing_audit`.
+6. Reconcile legacy photo sizes before enforcing uploads for paid/trial users. As the verified administrator, call `POST /api/billing/admin/photo-sizes` with `{ "userId": "<account UUID>" }` repeatedly until `remaining` is zero. Each call measures up to ten real stored objects and is audited. Missing objects fail explicitly; restore them rather than assuming zero usage. Until sizes are known, new limited-plan photo uploads return `503`; reads and exports remain available. Existing over-quota data is retained.
+7. In the **Paystack test dashboard**, create four ZAR, unlimited-invoice, recurring-card plans: Solo monthly `19900`, Solo annually `199000`, Professional monthly `39900`, Professional annually `399000` (amounts in cents). Configure `PAYSTACK_SOLO_MONTHLY_PLAN`, `PAYSTACK_SOLO_ANNUAL_PLAN`, `PAYSTACK_PROFESSIONAL_MONTHLY_PLAN`, `PAYSTACK_PROFESSIONAL_ANNUAL_PLAN` with their distinct `PLN_...` codes, and `PAYSTACK_SECRET_KEY` with the test secret. Set the webhook URL to `https://audex-api.mrhdigital.co.za/api/billing/webhook`.
+8. Enable `AUDEX_CHECKOUT_ENABLED=true`, keeping `AUDEX_LIVE_PAYMENTS=false`. Startup rejects mismatched test/live keys. Actual plan currency, interval, invoice limit and amount are checked before each checkout. Validate hosted checkout, successful and failed recurring charges, delayed/duplicate/out-of-order webhooks, expiry, cancellation, card management and refunds **against the real test merchant account**. Automated provider tests use fixtures, not a live Paystack connection.
+9. Enable `AUDEX_REGISTRATION_ENABLED=true` only after email delivery, abuse protection and onboarding have been checked. Rate limits are process-local, appropriate only to a single API instance; configure edge limits before public launch or shared rate limiting before horizontal scaling.
+10. For a live launch, repeat merchant validation with four **live** plan codes and the live secret, then explicitly set `AUDEX_LIVE_PAYMENTS=true`. These are operational steps, not accomplished by committing this code. Update marketing's preparation notice and enquiry CTAs only after the deployed signup/payment lifecycle is proven.
+
+### Payment and entitlement contract
+
+`GET /api/billing` returns `{enabled:false}` when off; otherwise it returns test-mode/checkout flags, the account's recurring subscriptions and an ECDSA P-256 signed offline lease. The UTF-8 JSON claims are base64url encoded with a separate base64url P1363 (64-byte) signature. The web app pins the corresponding public SPKI key; the signing secret is never sent to it. The lease is account-bound and expires after at most seven days, or at the trial/paid expiry if earlier. Complimentary accounts also refresh offline leases every seven days.
+
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| POST | `/api/auth/register` | Rate-limited individual signup (`username`, `email`, `displayName`, `password`); no role/plan accepted |
+| POST | `/api/auth/verify-email` | Single-use, 24-hour hashed verification token; links use a URL fragment |
+| POST | `/api/billing/verification` | Send/resend verification for the signed-in account |
+| GET | `/api/billing` | Signed entitlement, usage and subscription status |
+| POST | `/api/billing/checkout` | Server-priced hosted checkout (`plan`: `SOLO`/`PROFESSIONAL`, `cadence`: `monthly`/`annually`) |
+| POST | `/api/billing/refresh` | Verify outstanding payments with Paystack; redirects alone never activate access |
+| POST | `/api/billing/cancel` | Cancel renewal for an owned subscription (`code`); preserve verified paid time |
+| POST | `/api/billing/manage` | Generate a Paystack-hosted card/subscription management link for an owned `code` |
+| POST | `/api/billing/webhook` | Public endpoint requiring SHA-512 HMAC over the exact request bytes |
+| POST | `/api/billing/admin/grants` | Verified administrator only; pre-rollout candidate UUID and recorded reason required |
+| POST | `/api/billing/admin/photo-sizes` | Verified administrator only; reconcile one account's legacy sizes in bounded batches |
+
+Checkout intent is committed **before** contacting the provider. Only one unresolved checkout is issued per account, and a repeat choice resumes the same saved URL. Switching choices while payment is unresolved is refused. If initialization times out before returning a URL, retain the intent and investigate its provider reference; do not delete it and issue another chargeable checkout without confirming the original is no longer payable.
+
+Payment activation verifies success, reference, exact amount, ZAR currency, environment, plan and provider customer identity. Initial checkout references belong to server-authenticated account IDs; recurring invoices are bound through their verified provider subscription/customer/plan, never an email match. Payment references are unique, so replay cannot stack access. Periods use verified payment time and calendar cadence (monthly starts on the 29th-31st move to the 28th, matching Paystack's documented policy). A successful paid subscription replaces remaining trial time rather than adding it.
+
+Supported signed events are durably reduced to identifiers in `billing_event`; card authorisations and raw payloads are not retained. A scheduled worker retries pending events every minute, allowing subscription/payment events to arrive out of order. Monitor `processed_at IS NULL`, `attempts`, `last_error` and server warnings; persistent failures require investigation, not success-shaped fallbacks. `invoice.payment_failed` does not grant extra time. Refund/dispute events conservatively reverse the affected payment's access, without deleting records; partial refunds also require support review. Cancellation retains already verified paid time. Lost events must be replayed from Paystack and outstanding checkout references can also be refreshed by their owner.
+
+Every site, training, audit and photo write checks entitlement on the server. Per-account transactional locks serialise site/photo quota decisions, including restoring archived sites and implicit site creation during audit sync. Storage is the sum of owned uploaded object sizes; identical photo retries do not add usage. Existing sites/photos over a reduced allowance are retained; archive unused sites before adding or restoring more. Quotas are not controlled by browser-supplied plan or byte totals.
+
+After expiry/unverified access, writes return `402`; authenticated reads, account recovery, billing, audit/photo downloads and export remain available. Pending local work must not be discarded. Offline leases cannot make an untrusted browser/device clock tamper-proof: browser gating is cooperative UX, while the API independently enforces access/quotas against server time. Revocation/refunds can take up to the existing seven-day lease to affect a disconnected device.
+
+### Validation
+
+Run `mvn test`. For PostgreSQL-backed controller, concurrency, migration and subscription tests, provide **a disposable test database** in `AUDEX_TEST_DATABASE_URL` (JDBC URL), `AUDEX_TEST_DATABASE_USER`, and `AUDEX_TEST_DATABASE_PASSWORD`. Tests create randomly named schemas and remove only those schemas. Without that variable the integration classes are deliberately skipped; unit tests alone do not establish database/provider readiness.
 
 ### Synchronisation contract
 

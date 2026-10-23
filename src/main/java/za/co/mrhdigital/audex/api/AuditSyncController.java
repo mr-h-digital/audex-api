@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import za.co.mrhdigital.audex.auth.AuthInterceptor;
 import za.co.mrhdigital.audex.auth.AuthUser;
+import za.co.mrhdigital.audex.billing.EntitlementService;
 import za.co.mrhdigital.audex.scoring.Result;
 import za.co.mrhdigital.audex.scoring.RuleSet;
 import za.co.mrhdigital.audex.scoring.ScoreResult;
@@ -80,12 +81,14 @@ public class AuditSyncController {
     private final TemplateCatalog catalog;
     private final ObjectMapper mapper;
     private final SyncAccess access;
+    private final EntitlementService entitlements;
 
-    public AuditSyncController(JdbcTemplate jdbc, TemplateCatalog catalog, ObjectMapper mapper, SyncAccess access) {
+    public AuditSyncController(JdbcTemplate jdbc, TemplateCatalog catalog, ObjectMapper mapper, SyncAccess access, EntitlementService entitlements) {
         this.jdbc = jdbc;
         this.catalog = catalog;
         this.mapper = mapper;
         this.access = access;
+        this.entitlements = entitlements;
     }
 
     @PutMapping("/audits/{id}")
@@ -93,6 +96,7 @@ public class AuditSyncController {
     public ResponseEntity<SyncResponse> put(@PathVariable String id, @Valid @RequestBody AuditPayload p,
                                             @RequestAttribute(AuthInterceptor.ATTRIBUTE) AuthUser user) throws JsonProcessingException {
         UUID owner = SyncAccess.account(user);
+        entitlements.requireWrite(owner);
         if (!id.equals(p.id())) throw bad("Audit id in the URL and body differ");
         UUID auditId = uuid(p.id()), siteId = uuid(p.siteId());
         LocalDate date;
@@ -130,6 +134,9 @@ public class AuditSyncController {
             return ResponseEntity.ok(new SyncResponse(p.id(), saved.score().status(), saved.score().percent()));
         }
         UUID templateId = ensureTemplate();
+        if (jdbc.queryForObject("SELECT count(*) FROM site WHERE id = ?", Integer.class, siteId) == 0) {
+            entitlements.requireSiteCapacity(owner);
+        }
         jdbc.update("INSERT INTO rule_set (code, name, config) VALUES (?, ?, ?::jsonb) ON CONFLICT (code) DO NOTHING",
                 rules.code(), rules.name(), mapper.writeValueAsString(rules));
         jdbc.update("""

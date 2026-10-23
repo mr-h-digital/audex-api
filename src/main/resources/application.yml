@@ -15,6 +15,20 @@ audex:
   auth:
     # First-time setup is only possible while no account exists, and only with this code. Leave unset to switch setup off.
     setup-code: ${AUDEX_SETUP_CODE:}
+    registration-enabled: ${AUDEX_REGISTRATION_ENABLED:false}
+  billing:
+    enabled: ${AUDEX_BILLING_ENABLED:false}
+    checkout-enabled: ${AUDEX_CHECKOUT_ENABLED:false}
+    live-payments: ${AUDEX_LIVE_PAYMENTS:false}
+    secret-key: ${PAYSTACK_SECRET_KEY:}
+    private-key: ${AUDEX_ENTITLEMENT_PRIVATE_KEY:}
+    public-key: ${AUDEX_ENTITLEMENT_PUBLIC_KEY:}
+    bootstrap-admin-id: ${AUDEX_BOOTSTRAP_ADMIN_ID:}
+    provider-plans:
+      solo-monthly: ${PAYSTACK_SOLO_MONTHLY_PLAN:}
+      solo-annually: ${PAYSTACK_SOLO_ANNUAL_PLAN:}
+      professional-monthly: ${PAYSTACK_PROFESSIONAL_MONTHLY_PLAN:}
+      professional-annually: ${PAYSTACK_PROFESSIONAL_ANNUAL_PLAN:}
   mail:
     from: ${AUDEX_MAIL_FROM:no-reply@audex.local}
   allowed-origins: ${AUDEX_ALLOWED_ORIGINS:http://localhost:5173}

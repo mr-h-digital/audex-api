@@ -20,6 +20,8 @@ public class AuthController {
     public record EmailBody(String email) {}
     public record IdentifierBody(String identifier) {}
     public record ResetBody(String token, String password) {}
+    public record RegisterBody(String username, String email, String displayName, String password) {}
+    public record VerifyBody(String token) {}
 
     private static final Map<String, String> SAME_ANSWER = Map.of("message",
             "If that matches an account, an email is on its way. Please check your inbox (and junk folder).");
@@ -30,7 +32,18 @@ public class AuthController {
 
     /** Lets the app know whether to show first-time setup or sign-in. */
     @GetMapping("/status")
-    public Map<String, Object> status() { return Map.of("setupRequired", auth.setupRequired()); }
+    public Map<String, Object> status() { return Map.of("setupRequired", auth.setupRequired(), "registrationEnabled", auth.registrationEnabled()); }
+
+    @PostMapping("/register")
+    public AuthService.Session register(@RequestBody RegisterBody b, HttpServletRequest req) {
+        return auth.register(b.username(), b.email(), b.displayName(), b.password(), req.getHeader("User-Agent"), clientIp(req));
+    }
+
+    @PostMapping("/verify-email")
+    public Map<String, String> verify(@RequestBody VerifyBody b) {
+        auth.verifyEmail(b.token());
+        return Map.of("message", "Email verified. You can sign in and continue.");
+    }
 
     @PostMapping("/setup")
     public AuthService.Session setup(@RequestBody SetupBody b, HttpServletRequest req) {
